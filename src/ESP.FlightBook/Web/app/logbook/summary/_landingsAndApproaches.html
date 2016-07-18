@@ -1,0 +1,75 @@
+﻿<!-- landings and approaches -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-plane"></i> Landings and Approaches</div>
+    <div class="panel-body">
+        <div class="table-summary">
+            <table class="table table-condensed table-striped table-esp">
+                <thead>
+                    <tr>
+                        <th class="col-sm-4">Category</th>
+                        <th class="col-sm-2 text-right">Day</th>
+                        <th class="col-sm-2 text-right">Night</th>
+                        <th class="col-sm-2 text-right">Holds</th>
+                        <th class="col-sm-2 text-right">Approaches</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Last 7 Days</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast7Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast7Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast7Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast7Days | number:0}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 30 Days</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast30Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast30Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast30Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast30Days | number:0}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 60 Days</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast60Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast60Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast60Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast60Days | number:0}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 90 Days</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast90Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast90Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast90Days | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast90Days | number:0}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 6 Months</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast6Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast6Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast6Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast6Months | number:0}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 12 Months</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayLast12Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightLast12Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsLast12Months | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesLast12Months | number:0}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsDayTotal | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.landingsNightTotal | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.holdsTotal | number:0}}</td>
+                        <td class="text-right">{{summaryVm.landingsSummary.approachesTotal | number:0}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div ng-show="summaryVm.workingLandings">
+            <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</p>
+        </div>
+    </div>
+</div><!-- landings and approaches -->

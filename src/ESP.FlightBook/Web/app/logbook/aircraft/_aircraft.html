@@ -1,0 +1,171 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Aircraft</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- aircraft section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <!-- aircraft panel -->
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-plane"></i> Aircraft</div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="table-edit-column"></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftIdentifier')">Identifier<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftIdentifier'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftType')">Type<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftType'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftCategory')">Category<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftCategory'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftClass')">Class<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftClass'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftMake')">Make<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftMake'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftModel')">Model<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftModel'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                        <th class="sortable" ng-click="aircraftVm.order('aircraftYear')">Year<span class="sortorder" ng-show="aircraftVm.sortPredicate === 'aircraftYear'" ng-class="{reverse:aircraftVm.sortReverse}"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="aircraft in aircraftVm.aircraft | orderBy:[aircraftVm.nullsToTop].concat(aircraftVm.sortPredicate):aircraftVm.sortReverse | limitTo:aircraftVm.pageSize:(aircraftVm.pageCurrent * aircraftVm.pageSize)">
+                                        <td><div class="aircraft-data"><a href="" data-toggle="modal" data-target="#aircraftModal" ng-click="aircraftVm.initUpdateModal(aircraft.aircraftId)"><i class="fa fa-pencil"></i></a></div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftIdentifier}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftType}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftCategory}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftClass}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftMake}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftModel}}</div></td>
+                                        <td><div class="aircraft-data">{{aircraft.aircraftYear}}</div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="pagination no-margin-top no-margin-bottom" ng-show="aircraftVm.showPagination">
+                            <li ng-class="{'disabled': aircraftVm.disablePrev}" ng-show="aircraftVm.pageTotal > 5"><a ng-click="aircraftVm.setCurrentPage(0)"><i class="fa fa-angle-double-left"></i></a></li>
+                            <li ng-class="{'disabled' : aircraftVm.disablePrev}"><a ng-click="aircraftVm.setCurrentPage(aircraftVm.pageCurrent - 1)"><i class="fa fa-angle-left"></i></a></li>
+                            <li ng-repeat="page in [] | pages: aircraftVm.pageCurrent:aircraftVm.pageTotal:2" ng-class="{'active': aircraftVm.pageCurrent == page, 'disabled': aircraftVm.working}"><a ng-click="aircraftVm.setCurrentPage(page)">{{page + 1}}</a></li>
+                            <li ng-class="{'disabled' : aircraftVm.disableNext}"><a ng-click="aircraftVm.setCurrentPage(aircraftVm.pageCurrent + 1)"><i class="fa fa-angle-right"></i></a></li>
+                            <li ng-class="{'disabled': aircraftVm.disableNext}" ng-show="aircraftVm.pageTotal > 5"><a ng-click="aircraftVm.setCurrentPage(aircraftVm.pageTotal - 1)"><i class="fa fa-angle-double-right"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="" data-toggle="modal" data-target="#aircraftModal" ng-click="aircraftVm.initAddModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+                        <span class="text-success" ng-show="aircraftVm.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+                    </div>
+                </div> <!-- aircraft panel -->
+
+            </div>
+        </div>
+    </div>
+</section><!-- aircraft section -->
+
+<!-- aircraft modal -->
+<div class="modal fade" id="aircraftModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Aircraft</h3>
+            </div>
+            <div class="modal-body">
+                <form name="aircraftVm.aircraftForm" class="form-horizontal" role="form">
+                    <div class="form-group" ng-class="{'has-error': aircraftVm.aircraftForm.inputAircraftIdentifier.$touched && aircraftVm.aircraftForm.inputAircraftIdentifier.$invalid}">
+                        <label for="inputAircraftIdentifier" class="col-sm-4 control-label">Aircraft Identifier</label>
+                        <div class="col-sm-8">
+                            <input id="inputAircraftIdentifier" name="inputAircraftIdentifier" type="text" required="" class="form-control" placeholder="Enter aircraft identifier" ng-model="aircraftVm.tempAircraft.aircraftIdentifier" />
+                            <div ng-show="aircraftVm.aircraftForm.$submitted || aircraftVm.aircraftForm.inputAircraftIdentifier.$touched">
+                                <p class="help-block text-danger" ng-show="aircraftVm.aircraftForm.inputAircraftIdentifier.$error.required">Aircraft identifier is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': aircraftVm.aircraftForm.inputAircraftType.$touched && aircraftVm.aircraftForm.inputAircraftType.$invalid}">
+                        <label for="inputAircraftType" class="col-sm-4 control-label">Aircraft Type</label>
+                        <div class="col-sm-8">
+                            <input id="inputAircraftType" name="inputAircraftType" type="text" required="" class="form-control" placeholder="Enter aircraft type" ng-model="aircraftVm.tempAircraft.aircraftType" />
+                            <div ng-show="aircraftVm.aircraftForm.$submitted || aircraftVm.aircraftForm.inputAircraftType.$touched">
+                                <p class="help-block text-danger" ng-show="aircraftVm.aircraftForm.inputAircraftType.$error.required">Aircraft type is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': aircraftVm.aircraftForm.inputAircraftCategoryAndClass.$touched && aircraftVm.aircraftForm.inputAircraftCategoryAndClass.$invalid}">
+                        <label for="inputAircraftCategoryAndClass" class="col-sm-4 control-label">Aircraft Category &amp; Class</label>
+                        <div class="col-sm-8">
+                            <select id="inputAircraftCategoryAndClass" name="inputAircraftCategoryAndClass" required="" class="form-control" ng-model="aircraftVm.selectedCategoryAndClass" ng-options="item.label group by item.category for item in aircraftVm.constants.categoriesAndClasses"></select>
+                            <div ng-show="aircraftVm.aircraftForm.$submitted || aircraftVm.aircraftForm.inputAircraftCategoryAndClass.$touched">
+                                <p class="help-block text-danger" ng-show="aircraftVm.aircraftForm.inputAircraftCategoryAndClass.$error.required">Aircraft category and class is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAircraftMake" class="col-sm-4 control-label">Aircraft Make</label>
+                        <div class="col-sm-8">
+                            <input id="inputAircraftMake" name="inputAircraftMake" type="text" class="form-control" placeholder="Enter aircraft make" ng-model="aircraftVm.tempAircraft.aircraftMake" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAircraftModel" class="col-sm-4 control-label">Aircraft Model</label>
+                        <div class="col-sm-8">
+                            <input id="inputAircraftModel" name="inputAircraftModel" type="text" class="form-control" placeholder="Enter aircraft model" ng-model="aircraftVm.tempAircraft.aircraftModel" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAircraftYear" class="col-sm-4 control-label">Aircraft Year</label>
+                        <div class="col-sm-8">
+                            <input id="inputAircraftYear" name="inputAircraftYear" type="text" class="form-control" placeholder="Enter aircraft year" ng-model="aircraftVm.tempAircraft.aircraftYear" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEngineType" class="col-sm-4 control-label">Engine Type</label>
+                        <div class="col-sm-8">
+                            <select id="inputEngineType" name="inputEngineType" class="form-control" ng-model="aircraftVm.tempAircraft.engineType" ng-options="engineType.label as engineType.label for engineType in aircraftVm.constants.engineTypes"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputGearType" class="col-sm-4 control-label">Gear Type</label>
+                        <div class="col-sm-8">
+                            <select id="inputGearType" name="inputGearType" class="form-control" ng-model="aircraftVm.tempAircraft.gearType" ng-options="gearType.label as gearType.label for gearType in aircraftVm.constants.gearTypes"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsComplex" class="col-sm-4 control-label">Complex</label>
+                        <div class="col-sm-8">
+                            <input id="inputIsComplex" name="inputIsComplex" type="checkbox" class="checkbox-esp" ng-model="aircraftVm.tempAircraft.isComplex" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsHighPerformance" class="col-sm-4 control-label">High Performance</label>
+                        <div class="col-sm-8">
+                            <input id="inputIsHighPerformance" name="inputIsHighPerformance" type="checkbox" class="checkbox-esp" ng-model="aircraftVm.tempAircraft.isHighPerformance" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsPressurized" class="col-sm-4 control-label">Pressurized</label>
+                        <div class="col-sm-8">
+                            <input id="inputIsPressurized" name="inputIsPressurized" type="checkbox" class="checkbox-esp" ng-model="aircraftVm.tempAircraft.isPressurized" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="aircraftVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!aircraftVm.working">
+                    <p class="text-success pull-left">{{aircraftVm.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="aircraftVm.addAircraft()" ng-disabled="aircraftVm.aircraftForm.$invalid" ng-show="aircraftVm.showAddButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="aircraftVm.deleteAircraft()" ng-disabled="aircraftVm.aircraftForm.$invalid" ng-show="aircraftVm.showDeleteButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="aircraftVm.updateAircraft()" ng-disabled="aircraftVm.aircraftForm.$invalid" ng-show="aircraftVm.showUpdateButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- aircraft modal -->
+

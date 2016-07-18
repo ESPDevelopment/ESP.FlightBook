@@ -1,0 +1,75 @@
+﻿<!-- hours by condition -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-clock-o"></i> Hours by Condition of Flight</div>
+    <div class="panel-body">
+        <div class="table-summary">
+            <table class="table table-condensed table-striped table-esp">
+                <thead>
+                    <tr>
+                        <th class="col-sm-4">Category</th>
+                        <th class="col-sm-2 text-right">Day</th>
+                        <th class="col-sm-2 text-right">Night</th>
+                        <th class="col-sm-2 text-right">Actual</th>
+                        <th class="col-sm-2 text-right">Simulated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Last 7 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast7Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 30 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast30Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 60 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast60Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 90 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast90Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 6 Months</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast6Months | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 12 Months</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentLast12Months | number:1}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDayTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursNightTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursActualInstrumentTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSimulatedInstrumentTotal | number:1}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div ng-show="summaryVm.workingHours">
+            <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</p>
+        </div>
+    </div>
+</div><!-- total hours information -->

@@ -1,0 +1,180 @@
+﻿<!-- certificate panel -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-certificate"></i> Certificates</div>
+    <div class="panel-body">
+        <div class="table-pilot">
+            <table class="table table-condensed table-striped">
+                <tbody>
+                    <tr ng-repeat="certificate in certificatesVM.certificates | orderBy: '-CertificateDate'">
+                        <td class="table-edit-column"><a href="" data-toggle="modal" data-target="#certRatingModal" ng-click="certificatesVM.initUpdateCertificateModal(certificate.certificateId)"><i class="fa fa-pencil"></i></a></td>
+                        <th>{{certificate.certificateType}}</th>
+                        <td class="text-right">
+                            {{certificate.certificateDate | date : 'longDate'}}
+                            <div ng-repeat="rating in certificate.ratings | orderBy: '-RatingDate'">{{rating.ratingType}}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <a href="" data-toggle="modal" data-target="#certRatingModal" ng-click="certificatesVM.initAddCertificateModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+        <span class="text-success" ng-show="certificatesVM.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+    </div>
+</div> <!-- certificate panel -->
+
+<!-- certificate modal -->
+<div class="modal fade" id="certRatingModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Certificate</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- certificate form -->
+                        <form name="certificatesVM.certificateForm" class="form-horizontal" role="form" novalidate>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.certificateForm.inputCertificateType.$touched && certificatesVM.certificateForm.inputCertificateType.$invalid}">
+                                <label for="inputCertificateType" class="col-sm-4 control-label">Certificate Type</label>
+                                <div class="col-sm-8">
+                                    <select id="inputCertificateType" name="inputCertificateType" required="" class="form-control" ng-model="certificatesVM.tempCertificate.certificateType" ng-options="certificateType.label as certificateType.label for certificateType in certificatesVM.constants.certificateTypes"></select>
+                                    <div ng-show="certificatesVM.certificateForm.$submitted || certificatesVM.certificateForm.inputCertificateType.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.certificateForm.inputCertificateType.$error.required">Certificate type is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.certificateForm.inputCertificateDate.$touched && certificatesVM.certificateForm.inputCertificateDate.$invalid}">
+                                <label for="inputCertificateDate" class="col-sm-4 control-label">Certificate Date</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCertificateDate" name="inputCertificateDate" type="date" required="" class="form-control" placeholder="Enter certificate date (YYYY-MM-DD)" ng-model="certificatesVM.tempCertificateDateAsDate" />
+                                    <div ng-show="certificatesVM.certificateForm.$submitted || certificatesVM.certificateForm.inputCertificateDate.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.certificateForm.inputCertificateDate.$error.required">Certificate date is required.</div>
+                                        <div class="text-danger" ng-show="certificatesVM.certificateForm.inputCertificateDate.$error.date">Valid date is required in the format YYYY-MM-DD.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.certificateForm.inputCertificateNumber.$touched && certificatesVM.certificateForm.inputCertificateNumber.$invalid}">
+                                <label for="inputCertificateNumber" class="col-sm-4 control-label">Certificate Number</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCertificateNumber" name="inputCertificateNumber" type="text" required="" class="form-control" placeholder="Enter certificate number" ng-model="certificatesVM.tempCertificate.certificateNumber" />
+                                    <div ng-show="certificatesVM.certificateForm.$submitted || certificatesVM.certificateForm.inputCertificateNumber.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.certificateForm.inputCertificateNumber.$error.required">Certificate number is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.certificateForm.inputExpirationDate.$touched && certificatesVM.certificateForm.inputExpirationDate.$invalid}">
+                                <label for="inputExpirationDate" class="col-sm-4 control-label">Expiration Date</label>
+                                <div class="col-sm-8">
+                                    <input id="inputExpirationDate" name="inputExpirationDate" type="date" class="form-control" placeholder="Enter expiration date (YYYY-MM-DD)" ng-model="certificatesVM.tempExpirationDateAsDate" />
+                                    <div ng-show="certificatesVM.certificateForm.$submitted || certificatesVM.certificateForm.inputExpirationDate.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.certificateForm.inputExpirationDate.$error.date">Valid date is required in the format YYYY-MM-DD.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputRemarks" class="col-sm-4 control-label">Remarks</label>
+                                <div class="col-sm-8">
+                                    <input id="inputRemarks" name="inputRemarks" type="text" class="form-control" placeholder="Enter remarks" ng-model="certificatesVM.tempCertificate.remarks" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Ratings</label>
+                                <div class="col-sm-8">
+                                    <table id="ratings" class="table table-striped">
+                                        <tbody>
+                                            <tr ng-repeat="rating in certificatesVM.tempCertificate.ratings | orderBy: '-RatingDate'">
+                                                <td>{{rating.ratingType}}</td>
+                                                <td class="text-right"><a href="" data-toggle="modal" data-target="#ratingModal" ng-click="certificatesVM.initUpdateRatingModal(rating.certificateId, rating.ratingId)"><i class="fa fa-pencil"></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="text-right">
+                                                    <a href="" data-toggle="modal" data-target="#ratingModal" ng-click="certificatesVM.initAddRatingModal()"><i class="fa fa-plus"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form><!-- certificate form -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="certificatesVM.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!certificatesVM.working">
+                    <p class="text-success pull-left">{{certificatesVM.certificateMessage}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="certificatesVM.addCertificate()" ng-disabled="certificatesVM.certificateForm.$invalid" ng-show="certificatesVM.showAddCertificateButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="certificatesVM.deleteCertificate()" ng-disabled="certificatesVM.certificateForm.$invalid" ng-show="certificatesVM.showDeleteCertificateButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="certificatesVM.updateCertificate()" ng-disabled="certificatesVM.certificateForm.$invalid" ng-show="certificatesVM.showUpdateCertificateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- cert/rating modal -->
+
+<!-- rating modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Rating</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- rating form -->
+                        <form name="certificatesVM.ratingForm" class="form-horizontal" role="form" novalidate>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.ratingForm.inputRatingDate.$touched && certificatesVM.ratingForm.inputRatingDate.$invalid}">
+                                <label for="inputRatingDate" class="col-sm-4 control-label">Rating Date</label>
+                                <div class="col-sm-8">
+                                    <input id="inputRatingDate" name="inputRatingDate" type="date" class="form-control" required="" placeholder="Enter rating date" ng-model="certificatesVM.tempRatingDateAsDate" />
+                                    <div ng-show="certificatesVM.ratingForm.$submitted || certificatesVM.ratingForm.inputRatingDate.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.ratingForm.inputRatingDate.$error.required">Rating date is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': certificatesVM.ratingForm.inputRatingType.$touched && certificatesVM.ratingForm.inputRatingType.$invalid}">
+                                <label for="inputRatingType" class="col-sm-4 control-label">Rating Type</label>
+                                <div class="col-sm-8">
+                                    <select id="inputRatingType" name="inputRatingType" required="" class="form-control" ng-model="certificatesVM.tempRating.ratingType" ng-options="ratingType.label as ratingType.label for ratingType in certificatesVM.constants.ratingTypes"></select>
+                                    <div ng-show="certificatesVM.ratingForm.$submitted || certificatesVM.ratingForm.inputRatingType.$touched">
+                                        <div class="text-danger" ng-show="certificatesVM.ratingForm.inputRatingType.$error.required">Rating type is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputRatingRemarks" class="col-sm-4 control-label">Remarks</label>
+                                <div class="col-sm-8">
+                                    <input id="inputRatingRemarks" name="inputRatingRemarks" type="text" class="form-control" placeholder="Enter remarks" ng-model="certificatesVM.tempRating.remarks" />
+                                </div>
+                            </div>
+                        </form><!-- rating form -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="certificatesVM.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!certificatesVM.working">
+                    <p class="text-success pull-left">{{certificatesVM.ratingMessage}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="certificatesVM.addRating()" ng-disabled="certificatesVM.ratingForm.$invalid" ng-show="certificatesVM.showAddRatingButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="certificatesVM.deleteRating()" ng-disabled="certificatesVM.ratingForm.$invalid" ng-show="certificatesVM.showDeleteRatingButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="certificatesVM.updateRating()" ng-disabled="certificatesVM.ratingForm.$invalid" ng-show="certificatesVM.showUpdateRatingButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div><!-- rating modal -->

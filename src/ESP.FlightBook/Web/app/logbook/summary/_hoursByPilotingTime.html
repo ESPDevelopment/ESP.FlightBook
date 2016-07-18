@@ -1,0 +1,83 @@
+﻿<!-- hours by piloting time -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-clock-o"></i> Hours by Piloting Time</div>
+    <div class="panel-body">
+        <div class="table-summary">
+            <table class="table table-condensed table-striped table-esp">
+                <thead>
+                    <tr>
+                        <th class="col-sm-4">Category</th>
+                        <th class="col-sm-2 text-right">Total</th>
+                        <th class="col-sm-2 text-right">PIC</th>
+                        <th class="col-sm-2 text-right">Dual</th>
+                        <th class="col-sm-2 text-right">Solo</th>
+                        <th class="col-sm-2 text-right">XC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Last 7 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast7Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast7Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 30 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast30Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast30Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 60 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast60Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast60Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 90 Days</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast90Days | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast90Days | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 6 Months</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast6Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast6Months | number:1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last 12 Months</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloLast12Months | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCLast12Months | number:1}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursTotalTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursPICTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursDualTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursSoloTotal | number:1}}</td>
+                        <td class="text-right">{{summaryVm.hoursSummary.hoursXCTotal | number:1}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div ng-show="summaryVm.workingHours">
+            <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</p>
+        </div>
+    </div>
+</div><!-- hours by piloting time -->

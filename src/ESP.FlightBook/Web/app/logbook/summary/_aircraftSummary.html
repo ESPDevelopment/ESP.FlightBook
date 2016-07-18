@@ -1,0 +1,33 @@
+﻿<!-- aircraft summary -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-clock-o"></i> Aircraft Summary</div>
+    <div class="panel-body">
+        <div class="table-summary">
+            <table class="table table-condensed table-striped table-esp">
+                <thead>
+                    <tr>
+                        <th class="col-sm-1 sortable" ng-click="summaryVm.order('aircraft.aircraftIdentifier')">Identifier<span class="sortorder" ng-show="summaryVm.sortPredicate === 'aircraft.aircraftIdentifier'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                        <th class="col-sm-2 sortable" ng-click="summaryVm.order('aircraft.aircraftMake')">Make<span class="sortorder" ng-show="summaryVm.sortPredicate === 'aircraft.aircraftMake'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                        <th class="col-sm-3 sortable" ng-click="summaryVm.order('aircraft.aircraftModel')">Model<span class="sortorder" ng-show="summaryVm.sortPredicate === 'aircraft.aircraftModel'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                        <th class="col-sm-2 sortable text-right" ng-click="summaryVm.order('hoursTotal')">Hours<span class="sortorder" ng-show="summaryVm.sortPredicate === 'hoursTotal'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                        <th class="col-sm-2 sortable text-right" ng-click="summaryVm.order('landingsTotal')">Landings<span class="sortorder" ng-show="summaryVm.sortPredicate === 'landingsTotal'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                        <th class="col-sm-2 sortable text-right" ng-click="summaryVm.order('approaches')">Approaches<span class="sortorder" ng-show="summaryVm.sortPredicate === 'approaches'" ng-class="{reverse:summaryVm.sortReverse}"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="aircraft in summaryVm.aircraftSummary.aircraft | orderBy:[summaryVm.nullsToTop].concat(summaryVm.sortPredicate):summaryVm.sortReverse">
+                        <td>{{aircraft.aircraft.aircraftIdentifier}}</td>
+                        <td>{{aircraft.aircraft.aircraftMake}}</td>
+                        <td>{{aircraft.aircraft.aircraftModel}}</td>
+                        <td class="text-right">{{aircraft.hoursTotal | number:1}}</td>
+                        <td class="text-right">{{aircraft.landingsTotal | number:0}}</td>
+                        <td class="text-right">{{aircraft.approaches| number:0}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-show="summaryVm.workingAircraft">
+            <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</p>
+        </div>
+    </div>
+</div><!-- aircraft summary -->

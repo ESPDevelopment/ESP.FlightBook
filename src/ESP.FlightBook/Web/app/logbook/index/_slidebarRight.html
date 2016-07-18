@@ -1,0 +1,10 @@
+﻿<h2 class="slidebar-header no-margin-bottom">Logbook</h2>
+<ul class="slidebar-menu">
+    <li ng-repeat="logbook in indexVm.logbooks | orderBy:'title'"><a href="" ng-click="indexVm.setActiveLogbook(logbook.title, logbook.logbookId)"><i class="fa fa-folder-open-o"></i>&nbsp;{{logbook.title}}</a></li>
+    <li ng-show="indexVm.isLoggedIn()"><a href="#/logbooks" ng-click="indexVm.closeSlideBar()">Manage Logbooks</a></li>
+    <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/summary" ng-click="indexVm.closeSlideBar()">Summary</a></li>
+    <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/currency" ng-click="indexVm.closeSlideBar()">Currency</a></li>
+    <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/flights" ng-click="indexVm.closeSlideBar()">Flights</a></li>
+    <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/aircraft" ng-click="indexVm.closeSlideBar()">Aircraft</a></li>
+    <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/pilot" ng-click="indexVm.closeSlideBar()">Pilot</a></li>
+</ul>

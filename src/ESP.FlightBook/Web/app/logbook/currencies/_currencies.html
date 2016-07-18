@@ -1,0 +1,94 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Currency</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- currencies section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+
+                <!-- currencies panel -->
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-calendar-check-o"></i> Currency</div>
+                    <div class="panel-body">
+                        <div class="table-currency">
+                            <table class="table table-condensed table-striped">
+                                <tbody>
+                                    <tr ng-repeat="currency in currenciesVm.currencies | orderBy: 'currencyType.sortOrder'">
+                                        <td class="table-edit-column"><a href="" data-toggle="modal" data-target="#currencyModal" ng-click="currenciesVm.initUpdateModal(currency.currencyId)"><i class="fa fa-pencil"></i></a></td>
+                                        <td>
+                                            <strong>{{currency.currencyType | currencyType: currency.isNightCurrency}}<br /></strong>
+                                            <div ng-show="currency.isCurrent">Expires on {{currency.expirationDate | date:'longDate'}}</div>
+                                            <div ng-show="!currency.isCurrent && currency.expirationDate != null">Expired on {{currency.expirationDate | date:'longDate'}}</div>
+                                            <div ng-show="!currency.isCurrent && currency.expirationDate == null">Not Current</div>
+                                        </td>
+                                        <td class="text-right" ng-class="{'text-danger': !currency.isCurrent, 'text-success': currency.isCurrent}">
+                                            <strong>{{currency.daysRemaining}} Days</strong><br />
+                                            Remaining
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="" data-toggle="modal" data-target="#currencyModal" ng-click="currenciesVm.initAddModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+                        <span class="text-success" ng-show="currenciesVm.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+                    </div>
+                </div> <!-- currencies panel -->
+
+            </div>
+        </div>
+    </div>
+</section><!-- currencies section -->
+
+<!-- currency modal -->
+<div class="modal fade" id="currencyModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Currency</h3>
+            </div>
+            <div class="modal-body">
+                <form name="currenciesVm.currencyForm" class="form-horizontal" role="form">
+                    <div class="form-group" ng-class="{'has-error': currenciesVm.currencyForm.inputCurrencyType.$touched && currenciesVm.currencyForm.inputCurrencyType.$invalid}">
+                        <label for="inputCurrencyType" class="col-sm-4 control-label">Currency Type</label>
+                        <div class="col-sm-8">
+                            <select id="inputCurrencyType" name="inputCurrencyType" required="" class="form-control" ng-model="currenciesVm.selectedCurrencyType" ng-options="currencyType.label group by currencyType.category for currencyType in currenciesVm.constants.currencyTypes"></select>
+                            <div ng-show="currenciesVm.currencyForm.$submitted || currenciesVm.currencyForm.inputCurrencyType.$touched">
+                                <p class="help-block text-danger" ng-show="currenciesVm.currencyForm.inputCurrencyType.$error.required">Currency type is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="currenciesVm.selectedCurrencyType.calculationType == 1">
+                        <label for="inputIsNight" class="col-sm-4 control-label">Night Currency</label>
+                        <div class="col-sm-8">
+                            <input id="inputIsNight" name="inputIsNight" type="checkbox" class="checkbox-esp" ng-model="currenciesVm.tempCurrency.isNightCurrency" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="currenciesVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!currenciesVm.working">
+                    <p class="text-success pull-left">{{currenciesVm.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="currenciesVm.addCurrency()" ng-disabled="currenciesVm.currencyForm.$invalid" ng-show="currenciesVm.showAddButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="currenciesVm.deleteCurrency()" ng-disabled="currenciesVm.currencyForm.$invalid" ng-show="currenciesVm.showDeleteButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="currenciesVm.updateCurrency()" ng-disabled="currenciesVm.currencyForm.$invalid" ng-show="currenciesVm.showUpdateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- currency modal -->

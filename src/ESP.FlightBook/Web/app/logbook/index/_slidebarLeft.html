@@ -1,0 +1,9 @@
+﻿<h2 class="slidebar-header no-margin-bottom">Main Site</h2>
+<ul class="slidebar-menu">
+    <li><a href="#/home" ng-click="indexVm.closeSlideBar()">Home</a></li>
+    <li><a href="#/contact" ng-click="indexVm.closeSlideBar()">Contact us</a></li>
+    <li><a href="#/about" ng-click="indexVm.closeSlideBar()">About us</a></li>
+    <li><a href="#/register" ng-hide="indexVm.isLoggedIn()" ng-click="indexVm.closeSlideBar()"><i class="fa fa-check-square"></i> Register</a></li>
+    <li><a href="#/signin" ng-hide="indexVm.isLoggedIn()" ng-click="indexVm.closeSlideBar()"><i class="fa fa-sign-in"></i> Sign In</a></li>
+    <li><a href="" ng-show="indexVm.isLoggedIn()" ng-click="indexVm.signout()"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+</ul>

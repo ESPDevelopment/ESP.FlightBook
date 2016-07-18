@@ -1,0 +1,50 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Summary</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- summary section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <esp-hours-by-piloting-time></esp-hours-by-piloting-time>
+            </div>
+            <div class="col-md-6">
+                <esp-hours-by-condition></esp-hours-by-condition>
+            </div>
+            <div class="col-md-6">
+                <esp-landings-and-approaches></esp-landings-and-approaches>
+            </div>
+            <div class="col-md-6">
+                <esp-aircraft-summary></esp-aircraft-summary>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-bar-chart"></i> Total Hours by Year</div>
+                    <div class="panel-body">
+                        <div ng-controller="ChartsController as chartsVm">
+                            <div google-chart class="esp-chart" chart="chartsVm.hoursByYearChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-bar-chart"></i> Total Hours by Type</div>
+                    <div class="panel-body">
+                        <div ng-controller="ChartsController as chartsVm">
+                            <div google-chart class="esp-chart" chart="chartsVm.hoursByTypeChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- summary section -->

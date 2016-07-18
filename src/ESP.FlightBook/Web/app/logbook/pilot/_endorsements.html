@@ -1,0 +1,105 @@
+﻿<!-- endorsements panel -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-thumbs-up"></i> Endorsements</div>
+    <div class="panel-body">
+        <div class="table-pilot">
+            <table class="table table-responsive table-condensed table-striped">
+                <tbody>
+                    <tr ng-repeat="endorsement in endorsementsVM.endorsements | orderBy: '-endorsementDate'">
+                        <td class="table-edit-column"><a href="" data-toggle="modal" data-target="#endorsementModal" ng-click="endorsementsVM.initEditModal(endorsement.endorsementId)"><i class="fa fa-pencil"></i></a></td>
+                        <th>{{endorsement.title}}</th>
+                        <td class="text-right">{{endorsement.endorsementDate | date:'longDate'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <a href="" data-toggle="modal" data-target="#endorsementModal" ng-click="endorsementsVM.initAddModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+        <span class="text-success" ng-show="endorsementsVM.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+    </div>
+</div> <!-- endorsements panel -->
+
+<!-- endorsement modal -->
+<div class="modal fade" id="endorsementModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Endorsement</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form name="endorsementsVM.endorsementForm" class="form-horizontal" role="form" novalidate>
+                            <div class="form-group" ng-class="{'has-error': endorsementsVM.endorsementForm.inputEndorsementDate.$touched && endorsementsVM.endorsementForm.inputEndorsementDate.$invalid}">
+                                <label for="inputEndorsementDate" class="col-sm-4 control-label">Endorsement Date</label>
+                                <div class="col-sm-8">
+                                    <input id="inputEndorsementDate" name="inputEndorsementDate" type="date" required="" class="form-control" placeholder="Enter endorsement date (YYYY-MM-DD)" ng-model="endorsementsVM.tempEndorsementDateAsDate" />
+                                    <div class="text-danger" ng-show="endorsementsVM.endorsementForm.$submitted || endorsementsVM.endorsementForm.inputEndorsementDate.$touched">
+                                        <div class="text-danger" ng-show="endorsementsVM.endorsementForm.inputEndorsementDate.$error.required">Endorsement date is required.</div>
+                                        <div class="text-danger" ng-show="endorsementsVM.endorsementForm.inputEndorsementDate.$error.date">Valid date is required in the format YYYY-MM-DD.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEndorsementTemplate" class="col-sm-4 control-label">Endorsement Template</label>
+                                <div class="col-sm-8">
+                                    <select id="inputEndorsementTemplate" name="inputEndorsementTemplate" class="form-control" ng-model="endorsementsVM.selectedEndorsementType" ng-change="endorsementsVM.setTemplate()" ng-options="item.label group by item.category for item in endorsementsVM.constants.endorsementTypes"></select>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': endorsementsVM.endorsementForm.inputEndorsementTitle.$touched && endorsementsVM.endorsementForm.inputEndorsementTitle.$invalid}">
+                                <label for="inputEndorsementTitle" class="col-sm-4 control-label">Endorsement Title</label>
+                                <div class="col-sm-8">
+                                    <input id="inputEndorsementTitle" name="inputEndorsementTitle" type="text" required="" class="form-control" placeholder="Enter an endorsement title" ng-model="endorsementsVM.tempEndorsement.title" />
+                                    <div class="text-danger" ng-show="endorsementsVM.endorsementForm.$submitted || endorsementsVM.endorsementForm.inputEndorsementTitle.$touched"">
+                                        <div class="text-danger" ng-show="endorsementsVM.endorsementForm.inputEndorsementTitle.$error.required">Endorsement title is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': endorsementsVM.endorsementForm.inputEndorsementText.$touched && endorsementsVM.endorsementForm.inputEndorsementText.$invalid}">
+                                <label for="inputEndorsementText" class="col-sm-4 control-label">Endorsement Text</label>
+                                <div class="col-sm-8">
+                                    <textarea id="inputEndorsementText" name="inputEndorsementText" class="form-control" rows="7" placeholder="Enter endorsement text" ng-model="endorsementsVM.tempEndorsement.text" />
+                                    <div class="text-danger" ng-show="endorsementsVM.endorsementForm.$submitted || endorsementsVM.endorsementForm.inputEndorsementText.$touched">
+                                        <div class="text-danger" ng-show="endorsementsVM.endorsementForm.inputEndorsementText.$error.required">Endorsement text is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCFIName" class="col-sm-4 control-label">CFI Name</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCFIName" name="inputCFIName" type="text" class="form-control" placeholder="Enter name of CFI" ng-model="endorsementsVM.tempEndorsement.cfiName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCFINumber" class="col-sm-4 control-label ">CFI Number</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCFINumber" name="inputCFINumber" type="text" class="form-control" placeholder="Enter CFI number" ng-model="endorsementsVM.tempEndorsement.cfiNumber" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCFIExpiration" class="col-sm-4 control-label ">CFI Expiration</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCFIExpiration" name="inputCFIExpiration" type="text" class="form-control" placeholder="Enter CFI expiration" ng-model="endorsementsVM.tempEndorsement.cfiExpiration" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="endorsementsVM.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!endorsementsVM.working">
+                    <p class="text-success pull-left">{{endorsementsVM.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="endorsementsVM.addEndorsement()" ng-disabled="endorsementsVM.endorsementForm.$invalid" ng-show="endorsementsVM.showAddButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="endorsementsVM.deleteEndorsement()" ng-disabled="endorsementsVM.endorsementForm.$invalid" ng-show="endorsementsVM.showDeleteButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="endorsementsVM.updateEndorsement()" ng-disabled="endorsementsVM.endorsementForm.$invalid" ng-show="endorsementsVM.showUpdateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- endorsement modal -->

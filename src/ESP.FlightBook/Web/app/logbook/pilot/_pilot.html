@@ -1,0 +1,29 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Pilot</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- pilot section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <esp-pilot-info></esp-pilot-info>
+            </div>
+            <div class="col-md-6">
+                <esp-certificates></esp-certificates>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <esp-endorsements></esp-endorsements>
+            </div>
+        </div>
+    </div>
+</section><!-- pilot section -->

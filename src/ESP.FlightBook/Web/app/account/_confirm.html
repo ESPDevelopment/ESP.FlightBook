@@ -1,0 +1,33 @@
+﻿<!-- email confirmation -->
+<section class="margin-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-offset-0 col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+                <h3 class="section-title">Confirm Email Address</h3>
+                <p class="text-info" ng-show="confirmVm.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{confirmVm.message}}</p>
+                <p class="text-success" ng-show="!confirmVm.working && confirmVm.success">{{confirmVm.message}}</p>
+                <p class="text-danger" ng-show="!confirmVm.working && !confirmVm.success"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{{confirmVm.message}}</p>
+                <div class="row" ng-show="confirmVm.confirmationFailed">
+                    <div class="col-sm-12">
+                        <p>If you are experiencing issues confirming your email address, you can request a new confirmation email below.</p>
+                        <div class="panel panel-esp panel-default">
+                            <div class="panel-body">
+                                <form name="confirmVm.resendForm" class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label for="inputEmailAddress">Email Address&nbsp;&nbsp;</label>
+                                        <input id="inputEmailAddress" name="inputEmailAddress" type="email" class="form-control email" placeholder="Enter email address" ng-model="confirmVm.resendRequest.EmailAddress">
+                                        <div class="text-danger" ng-show="resendForm.$submitted || resendForm.emailAddress.$touched">
+                                            <div ng-show="resendForm.emailAddress.$error.required">Please enter your email address.</div>
+                                            <div ng-show="resendForm.emailAddress.$error.email">Please enter a valid email address.</div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-esp btn-primary" ng-click="confirmVm.resendConfirmationEmail()">Resend</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- email confirmation -->

@@ -1,0 +1,11 @@
+﻿ESP FlightBook
+
+Hi {{emailAddress}}!
+
+Let's confirm your email address.
+
+By clicking on the following link, you are confirming your email address and agreeing to ESP FlightBook's <a href="">Terms of Service</a>.
+
+<a href="{{confirmUrl}}">Confirm Email Address</a>
+
+(c) ESP Development | 1305 205th Ave NE, Sammamish, WA 98074 USA

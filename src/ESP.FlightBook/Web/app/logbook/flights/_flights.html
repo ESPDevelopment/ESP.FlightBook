@@ -1,0 +1,412 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Flights</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- flights section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <!-- recent flights panel -->
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-plane"></i> All Flights</div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-esp table-condensed table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Date</th>
+                                        <th>Aircraft / Type</th>
+                                        <th>Departure / Route / Destination</th>
+                                        <th class="text-right">Landings</th>
+                                        <th class="text-right">Flight Time</th>
+                                        <th class="col-sm-5">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="flight in flightsVm.flights | orderBy: '-flightDate' | limitTo:100">
+                                        <td class="text-center"><div class="flight-data"><a href="" data-toggle="modal" data-target="#flightModal" ng-click="flightsVm.initUpdateFlightModal(flight.flightId)"><i class="fa fa-pencil"></i></a></div></td>
+                                        <td class="text-nowrap"><div class="flight-data">{{flight.flightDate | date : "yyyy-MM-dd"}}</div></td>
+                                        <td class="text-nowrap"><div class="flight-data">{{flight.aircraft.aircraftIdentifier}}<br />{{flight.aircraft.aircraftType}}</div></td>
+                                        <td><div class="flight-data" ng-bind-html="flightsVm.getRoute(flight)"></div></td>
+                                        <td class="text-right"><div class="flight-data">{{flight.numberOfLandingsDay + flight.numberOfLandingsNight | number:0}}</div></td>
+                                        <td class="text-right"><div class="flight-data">{{flight.flightTimeTotal | number:1}}</div></td>
+                                        <td><div class="flight-data">{{flight.remarks}}</div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="pagination no-margin-top no-margin-bottom" ng-show="flightsVm.showPagination">
+                            <li ng-class="{'disabled': flightsVm.disablePrev}" ng-show="flightsVm.pageTotal > 5"><a ng-click="flightsVm.queryFlights(0)"><i class="fa fa-angle-double-left"></i></a></li>
+                            <li ng-class="{'disabled' : flightsVm.disablePrev}"><a ng-click="flightsVm.queryFlights(flightsVm.pageCurrent - 1)"><i class="fa fa-angle-left"></i></a></li>
+                            <li ng-repeat="page in [] | pages: flightsVm.pageCurrent:flightsVm.pageTotal:2" ng-class="{'active': flightsVm.pageCurrent == page, 'disabled': flightsVm.working}"><a ng-click="flightsVm.queryFlights(page)">{{page + 1}}</a></li>
+                            <li ng-class="{'disabled' : flightsVm.disableNext}"><a ng-click="flightsVm.queryFlights(flightsVm.pageCurrent + 1)"><i class="fa fa-angle-right"></i></a></li>
+                            <li ng-class="{'disabled': flightsVm.disableNext}" ng-show="flightsVm.pageTotal > 5"><a ng-click="flightsVm.queryFlights(flightsVm.pageTotal - 1)"><i class="fa fa-angle-double-right"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="" data-toggle="modal" data-target="#flightModal" ng-click="flightsVm.initAddFlightModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+                        <span class="text-success" ng-show="flightsVm.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+                    </div>
+                </div><!-- recent flights panel -->
+
+            </div>
+        </div>
+    </div>
+</section><!-- flights section -->
+
+<!-- flight modal -->
+<div class="modal fade" id="flightModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Flight</h3>
+            </div>
+            <div class="modal-body">
+                <div class="table-flight">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <form name="flightsVm.flightForm" class="form-horizontal" role="form" novalidate>
+
+                                        <!-- flight information panel -->
+                                        <div class="panel panel-esp panel-default">
+                                            <div class="panel-heading" role="tab">Flight Information</div>
+                                            <div class="panel-body">
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightDate.$touched && flightsVm.flightForm.inputFlightDate.$invalid}">
+                                                    <label for="inputFlightDate" class="col-sm-5 control-label">Flight Date</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightDate" name="inputFlightDate" type="date" required="" class="form-control" placeholder="Enter date of flight (YYYY-MM-DD)" ng-model="flightsVm.tempFlightDateAsDate" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightDate.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightDate.$error.required">Flight date is required.</div>
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightDate.$error.date">Valid date is required in the format YYYY-MM-DD.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputAircraftIdentifier.$touched && flightsVm.flightForm.inputAircraftIdentifier.$invalid}">
+                                                    <label for="inputAircraftIdentifier" class="col-sm-5 control-label">Aircraft Identifier</label>
+                                                    <div class="col-sm-7">
+                                                        <select id="inputAircraftIdentifier" name="inputAircraftIdentifier" required="" class="form-control" ng-model="flightsVm.tempFlight.aircraftId" ng-options="item.aircraftId as item.aircraftIdentifier for item in flightsVm.aircraft | orderBy:'aircraftIdentifier'"></select>
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputAircraftIdentifier.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputAircraftIdentifier.$error.required">Aircraft identifier is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputDepartureCode.$touched && flightsVm.flightForm.inputDepartureCode.$invalid}">
+                                                    <label for="inputDepartureCode" class="col-sm-5 control-label">Departure Code</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputDepartureCode" name="inputDepartureCode" type="text" required="" class="form-control" placeholder="Enter departure airport code" ng-model="flightsVm.tempFlight.departureCode" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputDepartureCode.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputDepartureCode.$error.required">Departure code is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputDestinationCode.$touched && flightsVm.flightForm.inputDestinationCode.$invalid}">
+                                                    <label for="inputDestinationCode" class="col-sm-5 control-label">Destination Code</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputDestinationCode" name="inputDestinationCode" type="text" required="" class="form-control" placeholder="Enter destination airport code" ng-model="flightsVm.tempFlight.destinationCode" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputDestinationCode.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputDestinationCode.$error.required">Destination code is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputRoute" class="col-sm-5 control-label">Route</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputRoute" name="inputRoute" type="text" class="form-control" placeholder="Enter route of flight" ng-model="flightsVm.tempFlight.route" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputRemarks" class="col-sm-5 control-label">Remarks</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputRemarks" name="inputRemarks" type="text" class="form-control" placeholder="Enter remarks" ng-model="flightsVm.tempFlight.remarks" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTime.$touched && flightsVm.flightForm.inputFlightTime.$invalid}">
+                                                    <label for="inputFlightTime" class="col-sm-5 control-label">Flight Time (Hours)</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTime" name="inputFlightTime" type="number" required="" class="form-control" placeholder="Enter total flight time in hours" ng-model="flightsVm.tempFlight.flightTimeTotal" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTime.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTime.$error.required">Flight time is required.</div>
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTime.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- flight information panel -->
+
+                                        <!-- conditions of flight panel -->
+                                        <div class="panel panel-default panel-esp">
+                                            <div class="panel-heading" role="tab">Conditions of Flight</div>
+                                            <div class="panel-body">
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeDay.$touched && flightsVm.flightForm.inputFlightTimeDay.$invalid}">
+                                                    <label for="inputFlightTimeDay" class="col-sm-5 control-label">Day</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeDay" name="inputFlightTimeDay" type="number" class="form-control" placeholder="Enter day flight time in hours" ng-model="flightsVm.tempFlight.flightTimeDay" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeDay.$touched">
+                                                            <div ng-show="flightsVm.flightForm.inputFlightTimeDay.$error.number" class="text-danger">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeNight.$touched && flightsVm.flightForm.inputFlightTimeNight.$invalid}">
+                                                    <label for="inputFlightTimeNight" class="col-sm-5 control-label">Night</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeNight" name="inputFlightTimeNight" type="number" class="form-control" placeholder="Enter night flight time in hours" ng-model="flightsVm.tempFlight.flightTimeNight" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeNight.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeNight.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeActualInstrument.$touched && flightsVm.flightForm.inputFlightTimeActualInstrument.$invalid}">
+                                                    <label for="inputFlightTimeActualInstrument" class="col-sm-5 control-label">Actual Instrument</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeActualInstrument" name="inputFlightTimeActualInstrument" type="number" class="form-control" placeholder="Enter actual instrument flight time in hours" ng-model="flightsVm.tempFlight.flightTimeActualInstrument" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeActualInstrument.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeActualInstrument.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeSimulatedInstrument.$touched && flightsVm.flightForm.inputFlightTimeSimulatedInstrument.$invalid}">
+                                                    <label for="inputFlightTimeSimulatedInstrument" class="col-sm-5 control-label">Simulated Instrument</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeSimulatedInstrument" name="inputFlightTimeSimulatedInstrument" type="number" class="form-control" placeholder="Enter simulated instrument flight time in hours" ng-model="flightsVm.tempFlight.flightTimeSimulatedInstrument" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeSimulatedInstrument.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeSimulatedInstrument.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- conditions of flight panel -->
+
+                                        <!-- piloting time panel -->
+                                        <div class="panel panel-default panel-esp">
+                                            <div class="panel-heading" role="tab">Piloting Time</div>
+                                            <div class="panel-body">
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimePIC.$touched && flightsVm.flightForm.inputFlightTimePIC.$invalid}">
+                                                    <label for="inputFlightTimePIC" class="col-sm-5 control-label">PIC</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimePIC" name="inputFlightTimePIC" type="number" class="form-control" placeholder="Enter PIC flight time in hours" ng-model="flightsVm.tempFlight.flightTimePIC" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimePIC.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimePIC.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeDual.$touched && flightsVm.flightForm.inputFlightTimeDual.$invalid}">
+                                                    <label for="inputFlightTimeDual" class="col-sm-5 control-label">Dual</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeDual" name="inputFlightTimeDual" type="number" class="form-control" placeholder="Enter dual flight time in hours" ng-model="flightsVm.tempFlight.flightTimeDual" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeDual.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeDual.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeSolo.$touched && flightsVm.flightForm.inputFlightTimeSolo.$invalid}">
+                                                    <label for="inputFlightTimeSolo" class="col-sm-5 control-label">Solo</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeSolo" name="inputFlightTimeSolo" type="number" class="form-control" placeholder="Enter solo flight time in hours" ng-model="flightsVm.tempFlight.flightTimeSolo" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeSolo.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeSolo.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputFlightTimeCrossCountry.$touched && flightsVm.flightForm.inputFlightTimeCrossCountry.$invalid}">
+                                                    <label for="inputFlightTimeCrossCountry" class="col-sm-5 control-label">Cross Country</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputFlightTimeCrossCountry" name="inputFlightTimeCrossCountry" type="number" class="form-control" placeholder="Enter cross country flight time in hours" ng-model="flightsVm.tempFlight.flightTimeCrossCountry" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputFlightTimeCrossCountry.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputFlightTimeCrossCountry.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> <!-- piloting time panel -->
+
+                                        <!-- landings and approaches panel -->
+                                        <div class="panel panel-default panel-esp">
+                                            <div class="panel-heading" role="tab">Landings and Approaches</div>
+                                            <div class="panel-body">
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputNumberOfLandingsDay.$touched && flightsVm.flightForm.inputNumberOfLandingsDay.$invalid}">
+                                                    <label for="inputNumberOfLandingsDay" class="col-sm-5 control-label">Day Landings</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputNumberOfLandingsDay" name="inputNumberOfLandingsDay" type="number" required="" class="form-control" placeholder="Enter number of day landings" ng-model="flightsVm.tempFlight.numberOfLandingsDay" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputNumberOfLandingsDay.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfLandingsDay.$error.required">Number of day landings is required.</div>
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfLandingsDay.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputNumberOfLandingsNight.$touched && flightsVm.flightForm.inputNumberOfLandingsNight.$invalid}">
+                                                    <label for="inputNumberOfLandingsNight" class="col-sm-5 control-label">Night Landings</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputNumberOfLandingsNight" name="inputNumberOfLandingsNight" type="number" required="" class="form-control" placeholder="Enter number of night landings" ng-model="flightsVm.tempFlight.numberOfLandingsNight" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputNumberOfLandingsNight.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfLandingsNight.$error.required">Number of night landings is required.</div>
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfLandingsNight.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-class="{'has-error': flightsVm.flightForm.inputNumberOfHolds.$touched && flightsVm.flightForm.inputNumberOfHolds.$invalid}">
+                                                    <label for="inputNumberOfHolds" class="col-sm-5 control-label">Number of Holds</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputNumberOfHolds" name="inputNumberOfHolds" type="number" required="" class="form-control" placeholder="Enter number of holds" ng-model="flightsVm.tempFlight.numberOfHolds" />
+                                                        <div ng-show="flightsVm.flightForm.$submitted || flightsVm.flightForm.inputNumberOfHolds.$touched">
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfHolds.$error.required">Number of holds is required.</div>
+                                                            <div class="text-danger" ng-show="flightsVm.flightForm.inputNumberOfHolds.$error.number">Valid number is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-5 control-label">Approaches</label>
+                                                    <div class="col-sm-7">
+                                                        <table id="approaches" class="table table-striped">
+                                                            <tbody>
+                                                                <tr ng-repeat="approach in flightsVm.tempFlight.approaches | orderBy: 'AirportCode'">
+                                                                    <td>{{approach.airportCode}}&nbsp;{{approach.approachType}}&nbsp;Runway&nbsp;{{approach.runway}}</td>
+                                                                    <td class="text-right"><a href="" data-toggle="modal" data-target="#approachModal" ng-click="flightsVm.initUpdateApproachModal(approach.flightId, approach.approachId)"><i class="fa fa-pencil"></i></a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-right">
+                                                                        <a href="" data-toggle="modal" data-target="#approachModal" ng-click="flightsVm.initAddApproachModal()"><i class="fa fa-plus"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- landings and approaches panel -->
+
+                                        <!-- special conditions -->
+                                        <div class="panel panel-default panel-esp">
+                                            <div class="panel-heading" role="tab">Special Conditions</div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="inputIsCheckRide" class="col-sm-5 control-label">Check Ride</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputIsCheckRide" name="inputIsCheckRide" type="checkbox" class="checkbox-esp" ng-model="flightsVm.tempFlight.isCheckRide" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputIsFlightReview" class="col-sm-5 control-label">Flight Review</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputIsFlightReview" name="inputIsFlightReview" type="checkbox" class="checkbox-esp" ng-model="flightsVm.tempFlight.isFlightReview" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputIsInstrumentProficiencyCheck" class="col-sm-5 control-label">Instrument Proficiency Check</label>
+                                                    <div class="col-sm-7">
+                                                        <input id="inputIsInstrumentProficiencyCheck" name="inputIsInstrumentProficiencyCheck" type="checkbox" class="checkbox-esp" ng-model="flightsVm.tempFlight.isInstrumentProficiencyCheck" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- special conditions -->
+
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="flightsVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!flightsVm.working">
+                    <p class="text-success pull-left">{{flightsVm.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="flightsVm.addFlight()" ng-disabled="flightsVm.flightForm.$invalid" ng-show="flightsVm.showAddFlightButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="flightsVm.deleteFlight()" ng-disabled="flightsVm.flightForm.$invalid" ng-show="flightsVm.showDeleteFlightButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="flightsVm.updateFlight()" ng-disabled="flightsVm.flightForm.$invalid" ng-show="flightsVm.showUpdateFlightButton">Save</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- flight modal -->
+
+<!-- approach modal -->
+<div class="modal fade" id="approachModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Instrument Approach</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- approach form -->
+                        <form name="flightsVm.approachForm" class="form-horizontal" role="form" novalidate>
+                            <div class="form-group" ng-class="{'has-error': flightsVm.approachForm.inputAirportCode.$touched && flightsVm.approachForm.inputAirportCode.$invalid}">
+                                <label for="inputAirportCode" class="col-sm-4 control-label">Airport Code</label>
+                                <div class="col-sm-8">
+                                    <input id="inputAirportCode" name="inputAirportCode" type="text" class="form-control" required="" placeholder="Enter airport code" ng-model="flightsVm.tempApproach.airportCode" />
+                                    <div ng-show="flightsVm.approachForm.$submitted || flightsVm.approachForm.inputAirportCode.$touched">
+                                        <div class="text-danger" ng-show="flightsVm.approachForm.inputAirportCode.$error.required">Airport code is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': flightsVm.approachForm.inputApproachType.$touched && flightsVm.approachForm.inputApproachType.$invalid}">
+                                <label for="inputApproachType" class="col-sm-4 control-label">Approach Type</label>
+                                <div class="col-sm-8">
+                                    <select id="inputApproachType" name="inputApproachType" class="form-control" ng-model="flightsVm.tempApproach.approachType" ng-options="approachType.label as approachType.label for approachType in flightsVm.constants.approachTypes"></select>
+                                    <div ng-show="flightsVm.approachForm.$submitted || flightsVm.approachForm.inputApproachType.$touched">
+                                        <div class="text-danger" ng-show="flightsVm.approachForm.inputApproachType.$error.required">Approach type is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': flightsVm.approachForm.inputRunway.$touched && flightsVm.approachForm.inputRunway.$invalid}">
+                                <label for="inputRunway" class="col-sm-4 control-label">Runway</label>
+                                <div class="col-sm-8">
+                                    <input id="inputRunway" name="inputRunway" type="text" class="form-control" required="" placeholder="Enter runway" ng-model="flightsVm.tempApproach.runway" />
+                                    <div ng-show="flightsVm.approachForm.$submitted || flightsVm.approachForm.inputRunway.$touched">
+                                        <div class="text-danger" ng-show="flightsVm.approachForm.inputRunway.$error.required">Runway is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputIsCircleToLand" class="col-sm-4 control-label">Circle to land</label>
+                                <div class="col-sm-8">
+                                    <input id="inputIsCircleToLand" name="inputIsCircleToLand" type="checkbox" class="checkbox-esp" ng-model="flightsVm.tempApproach.isCircleToLand" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputApproachRemarks" class="col-sm-4 control-label">Remarks</label>
+                                <div class="col-sm-8">
+                                    <input id="inputApproachRemarks" name="inputApproachRemarks" type="text" class="form-control" placeholder="Enter remarks" ng-model="flightsVm.tempApproach.remarks" />
+                                </div>
+                            </div>
+                        </form><!-- approach form -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="flightsVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!flightsVm.working">
+                    <p class="text-success pull-left">{{flightsVm.approachMessage}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="flightsVm.addApproach()" ng-disabled="flightsVm.approachForm.$invalid" ng-show="flightsVm.showAddApproachButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="flightsVm.deleteApproach()" ng-disabled="flightsVm.approachForm.$invalid" ng-show="flightsVm.showDeleteApproachButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="flightsVm.updateApproach()" ng-disabled="flightsVm.approachForm.$invalid" ng-show="flightsVm.showUpdateApproachButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div><!-- approach modal -->

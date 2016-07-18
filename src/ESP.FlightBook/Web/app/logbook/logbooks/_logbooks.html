@@ -1,0 +1,91 @@
+﻿<!-- page header -->
+<header class="main-header">
+    <div class="container">
+        <h1 class="page-title">Logbooks</h1>
+        <ol class="breadcrumb pull-right">
+            <li><a href="#/logbooks">Logbooks</a></li>
+            <li class="active">{{indexVm.activeLogbook.title}}</li>
+        </ol>
+    </div>
+</header><!-- page header -->
+
+<!-- logbooks section -->
+<section class="margin-bottom margin-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+
+                <!-- logbooks panel -->
+                <div class="panel panel-esp panel-info">
+                    <div class="panel-heading"><i class="fa fa-book"></i> Logbooks</div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="table-edit-column"></th>
+                                        <th>Logbook</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="logbook in logbooksVm.logbooks | orderBy:'Title'">
+                                        <td><a href="" data-toggle="modal" data-target="#logbookModal" ng-click="logbooksVm.initUpdateModal(logbook.logbookId)"><i class="fa fa-pencil"></i></a></td>
+                                        <td ng-click="logbooksVm.setActiveLogbook(logbook.title, logbook.logbookId)">{{logbook.title}}<br /><span class="text-info">{{logbook.remarks}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="" data-toggle="modal" data-target="#logbookModal" ng-click="logbooksVm.initAddModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-plus"></i></span></a>
+                        <span class="text-success" ng-show="logbooksVm.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+                    </div>
+                </div> <!-- logbooks panel -->
+
+            </div>
+        </div>
+    </div>
+</section><!-- logbooks section -->
+
+<!-- logbook modal -->
+<div class="modal fade" id="logbookModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Logbook</h3>
+            </div>
+            <div class="modal-body">
+                <form name="logbooksVm.logbookForm" class="form-horizontal" role="form">
+                    <div class="form-group" ng-class="{'has-error': logbooksVm.logbookForm.inputLogbookTitle.$touched && logbooksVm.logbookForm.inputLogbookTitle.$invalid}">
+                        <label for="inputLogbookTitle" class="col-sm-4 control-label">Title</label>
+                        <div class="col-sm-8">
+                            <input id="inputLogbookTitle" name="inputLogbookTitle" type="text" required="" class="form-control" placeholder="Enter logbook title" ng-model="logbooksVm.tempLogbook.title" />
+                            <div ng-show="logbooksVm.logbookForm.$submitted || logbooksVm.logbookForm.inputLogbookTitle.$touched">
+                                <p class="help-block text-danger" ng-show="logbooksVm.logbookForm.inputLogbookTitle.$error.required">Logbook title is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLogbookRemarks" class="col-sm-4 control-label">Remarks</label>
+                        <div class="col-sm-8">
+                            <input id="inputLogbookRemarks" name="inputLogbookRemarks" type="text" class="form-control" placeholder="Enter logbook remarks" ng-model="logbooksVm.tempLogbook.remarks" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="logbooksVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!logbooksVm.working">
+                    <p class="text-success pull-left">{{logbooksVm.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="logbooksVm.addLogbook()" ng-disabled="logbooksVm.logbookForm.$invalid" ng-show="logbooksVm.showAddButton">Add</button>
+                <button type="button" class="btn btn-esp btn-danger" ng-click="logbooksVm.deleteLogbook()" ng-disabled="logbooksVm.logbookForm.$invalid" ng-show="logbooksVm.showDeleteButton">Delete</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="logbooksVm.updateLogbook()" ng-disabled="logbooksVm.logbookForm.$invalid" ng-show="logbooksVm.showUpdateButton">Update</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- logbook modal -->

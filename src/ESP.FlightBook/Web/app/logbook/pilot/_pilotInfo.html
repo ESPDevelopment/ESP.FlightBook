@@ -1,0 +1,132 @@
+﻿<!-- pilot information -->
+<div class="panel panel-esp panel-info">
+    <div class="panel-heading"><i class="fa fa-user"></i> Pilot Information</div>
+    <div class="panel-body">
+        <div class="table-pilot">
+            <table class="table table-striped table-condensed">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td class="text-right">{{pilotInfoVM.pilot.firstName}} {{pilotInfoVM.pilot.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td class="text-right">{{pilotInfoVM.pilot.emailAddress}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td class="text-right"><div ng-bind-html="pilotInfoVM.getAddressLine()"></div></td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td class="text-right"><div ng-bind-html="pilotInfoVM.getCityStateZip()"></div></td>
+                    </tr>
+                    <tr>
+                        <th>Home Phone</th>
+                        <td class="text-right">{{pilotInfoVM.pilot.homePhoneNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th>Cell Phone</th>
+                        <td class="text-right">{{pilotInfoVM.pilot.cellPhoneNumber}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <a href="" data-toggle="modal" data-target="#pilotModal" ng-click="pilotInfoVM.initUpdateModal()"><span class="icon-esp icon-esp-sm"><i class="fa fa-pencil"></i></span></a>
+        <span class="text-success" ng-show="pilotInfoVM.working"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Loading data...</span>
+    </div>
+</div><!-- pilot information -->
+
+<!-- update profile modal -->
+<div class="modal fade" id="pilotModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Pilot</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form name="pilotInfoVM.pilotForm" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="inputFirstName" class="col-sm-4 control-label">First Name</label>
+                                <div class="col-sm-8">
+                                    <input id="inputFirstName" name="inputFirstName" type="text" class="form-control" placeholder="Enter first name" ng-model="pilotInfoVM.tempPilot.firstName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputLastName" class="col-sm-4 control-label">Last Name</label>
+                                <div class="col-sm-8">
+                                    <input id="inputLastName" name="inputLastName" type="text" class="form-control" placeholder="Enter last name" ng-model="pilotInfoVM.tempPilot.lastName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmailAddress" class="col-sm-4 control-label">Email Address</label>
+                                <div class="col-sm-8">
+                                    <input id="inputEmailAddress" name="inputEmailAddress" type="email" class="form-control" placeholder="Enter email address" ng-model="pilotInfoVM.tempPilot.emailAddress" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress1" class="col-sm-4 control-label">Address</label>
+                                <div class="col-sm-8">
+                                    <input id="inputAddress1" name="inputAddress1" type="text" class="form-control" placeholder="Enter address line 1" ng-model="pilotInfoVM.tempPilot.addressLine1" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress2" class="col-sm-4 control-label"></label>
+                                <div class="col-sm-8">
+                                    <input id="inputAddress2" name="inputAddress2" type="text" class="form-control" placeholder="Enter address line 2" ng-model="pilotInfoVM.tempPilot.addressLine2" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCity" class="col-sm-4 control-label">City</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCity" name="inputCity" type="text" class="form-control" placeholder="Enter city" ng-model="pilotInfoVM.tempPilot.city" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputStateOrProvince" class="col-sm-4 control-label">State or Province</label>
+                                <div class="col-sm-8">
+                                    <input id="inputStateOrProvince" name="inputStateOrProvince" type="text" class="form-control" placeholder="Enter state or province" ng-model="pilotInfoVM.tempPilot.stateOrProvince" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPostalCode" class="col-sm-4 control-label">Postal Code</label>
+                                <div class="col-sm-8">
+                                    <input id="inputPostalCode" name="inputPostalCode" type="text" class="form-control" placeholder="Enter Zipcode or postal code" ng-model="pilotInfoVM.tempPilot.postalCode" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputHomePhoneNumber" class="col-sm-4 control-label">Home Phone</label>
+                                <div class="col-sm-8">
+                                    <input id="inputHomePhoneNumber" name="inputHomePhoneNumber" type="text" class="form-control" placeholder="Enter home phone number" ng-model="pilotInfoVM.tempPilot.homePhoneNumber" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCellPhoneNumber" class="col-sm-4 control-label">Cell Phone</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCellPhoneNumber" name="inputCellPhoneNumber" type="text" class="form-control" placeholder="Enter cell phone number" ng-model="pilotInfoVM.tempPilot.cellPhoneNumber" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="pilotInfoVM.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!pilotInfoVM.working">
+                    <p class="text-success pull-left">{{pilotInfoVM.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="pilotInfoVM.addPilot()" ng-show="pilotInfoVM.showAddButton" ng-disabled="pilotInfoVM.pilotForm.$invalid">Save</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="pilotInfoVM.updatePilot()" ng-show="pilotInfoVM.showUpdateButton" ng-disabled="pilotInfoVM.pilotForm.$invalid">Save</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- update profile modal -->
+

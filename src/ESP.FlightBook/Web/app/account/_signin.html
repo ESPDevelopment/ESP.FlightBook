@@ -1,0 +1,135 @@
+﻿<!-- signin navigation tabs -->
+<nav class="nav nav-signin">
+    <div class="container-fluid">
+        <div class="col-xs-offset-0 col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
+            <ul class="nav nav-tabs nav-tabs-esp nav-tabs-esp-white">
+                <li ng-class="{active: accountVm.isActiveTab('/signin')}"><a href="#signin" data-toggle="tab"><i class="fa fa-sign-in"></i> Sign In</a></li>
+                <li ng-class="{active: accountVm.isActiveTab('/register')}"><a href="#register" data-toggle="tab"><i class="fa fa-check-square"></i> Register</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="signinTab" ng-class="{active: accountVm.isActiveTab('/signin')}">
+                    <form name="signinForm" role="form" novalidate>
+                        <h3 class="section-title no-margin-top">Sign in with your account</h3>
+                        <div class="form-group" ng-show="signinForm.$submitted && accountVm.working">
+                            <p class="text-success"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                        </div>
+                        <div class="form-group" ng-show="signinForm.$submitted && !accountVm.working && !accountVm.success">
+                            <p class="text-danger"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{{accountVm.message}}</p>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': signinForm.emailAddress.$touched && signinForm.emailAddress.$invalid}">
+                            <input name="emailAddress" type="email" required="required" class="form-control" placeholder="Enter email address" ng-model="accountVm.signinRequest.EmailAddress" />
+                            <div class="text-danger" ng-show="signinForm.$submitted || signinForm.emailAddress.$touched">
+                                <div ng-show="signinForm.emailAddress.$error.required">Please enter your email address.</div>
+                                <div ng-show="signinForm.emailAddress.$error.email">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': signinForm.password.$touched && signinForm.password.$invalid}">
+                            <input name="password" type="password" required="required" class="form-control" placeholder="Enter password" ng-model="accountVm.signinRequest.Password" />
+                            <div class="text-danger" ng-show="signinForm.$submitted || signinForm.password.$touched">
+                                <div ng-show="signinForm.password.$error.required">Please enter your password.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-esp btn-primary btn-block" ng-click="accountVm.signin()" ng-disabled="signinForm.emailAddress.$invalid || signinForm.password.$invalid">Sign In</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="checkbox-inline">
+                                    <input name="RememberMe" type="checkbox" ng-model="accountVm.signinRequest.RememberMe" />
+                                    <label for="RememberMe">Stay signed in?</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <p class="text-right"><a href="" data-toggle="modal" data-target="#forgotPasswordModal">Forgot your password?</a></p>
+                            </div>
+                        </div>
+                        <p><small>Using a public or shared device? Uncheck to protect your account.</small></p>
+                    </form>
+                </div>
+                <div class="tab-pane" id="registerTab"  ng-class="{active: accountVm.isActiveTab('/register')}">
+                    <form name="registerForm" role="form">
+                        <h3 class="section-title no-margin-top">Create a new account</h3>
+                        <div class="form-group" ng-show="registerForm.$submitted && accountVm.working">
+                            <p class="text-success"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                        </div>
+                        <div class="form-group" ng-show="registerForm.$submitted && !accountVm.working && !accountVm.success">
+                            <p class="text-danger"><i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;{{accountVm.message}}</p>
+                            <ul class="text-danger">
+                                <li ng-repeat="error in accountVm.errors">{{error.Description}}</li>
+                            </ul>
+                        </div>
+                        <div class="form-group" ng-show="registerForm.$submitted && !accountVm.working && accountVm.success">
+                            <p class="text-success"><i class="fa fa-check-circle"></i> {{accountVm.message}}</p>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': registerForm.emailAddress.$touched && registerForm.emailAddress.$invalid}">
+                            <input name="emailAddress" type="email" required="" class="form-control" placeholder="Enter email address" ng-model="accountVm.registerRequest.EmailAddress" />
+                            <div class="text-danger" ng-show="registerForm.$submitted || registerForm.emailAddress.$touched">
+                                <div ng-show="registerForm.emailAddress.$error.required">Please enter your email address.</div>
+                                <div ng-show="registerForm.emailAddress.$error.email">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': registerForm.password.$touched && registerForm.password.$invalid}">
+                            <input name="password" type="password" required="required" class="form-control" placeholder="Enter password" ng-model="accountVm.registerRequest.Password" />
+                            <div class="text-danger" ng-show="registerForm.$submitted || registerForm.password.$touched">
+                                <div ng-show="registerForm.password.$error.required">Please enter your password.</div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': registerForm.confirmPassword.$touched && (registerForm.confirmPassword.$invalid || registerRequest.ConfirmPassword != registerRequest.Password)}">
+                            <input name="confirmPassword" type="password" required="required" class="form-control" placeholder="Enter password again" ng-model="accountVm.registerRequest.ConfirmPassword" />
+                            <div class="text-danger" ng-show="registerForm.$submitted || registerForm.confirmPassword.$touched">
+                                <div ng-show="registerForm.confirmPassword.$error.required">Please enter your again password.</div>
+                                <div ng-show="registerRequest.ConfirmPassword != registerRequest.Password">Your passwords do not match.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-esp btn-primary btn-block" ng-click="accountVm.register()" ng-disabled="registerForm.emailAddress.$invalid || registerForm.password.$invalid || registerRequest.ConfirmPassword != registerRequest.Password">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav><!-- signin navigation tabs -->
+
+<!-- forgot password modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Forgot Password</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- forgot password form -->
+                        <form name="accountVm.forgotPasswordForm" class="form-horizontal" role="form" novalidate>
+                            <div class="form-group" ng-class="{'has-error': accountVm.forgotPasswordForm.inputEmailAddress.$touched && accountVm.forgotPasswordForm.inputEmailAddress.$invalid}">
+                                <label for="inputEmailAddress" class="col-sm-4 control-label">Email Address</label>
+                                <div class="col-sm-8">
+                                    <input id="inputEmailAddress" name="inputEmailAddress" type="email" class="form-control" required="" placeholder="Enter email address" ng-model="accountVm.forgotPasswordRequest.EmailAddress" />
+                                    <div class="text-danger" ng-show="accountVm.forgotPasswordForm.$submitted || accountVm.forgotPasswordForm.inputEmailAddress.$touched">
+                                        <div ng-show="accountVm.forgotPasswordForm.inputEmailAddress.$error.required">Please enter your email address.</div>
+                                        <div ng-show="accountVm.forgotPasswordForm.inputEmailAddress.$error.email">Please enter a valid email address.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form><!-- forgot password form -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="accountVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!accountVm.working">
+                    <p class="text-success text-left">{{accountVm.forgotPasswordMessage}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-click="accountVm.forgotPassword()" ng-disabled="accountVm.forgotPasswordForm.$invalid">Send</button>
+            </div>
+        </div>
+    </div>
+</div><!-- forgot password modal -->

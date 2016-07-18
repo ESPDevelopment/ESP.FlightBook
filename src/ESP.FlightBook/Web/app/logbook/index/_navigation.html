@@ -1,0 +1,63 @@
+﻿<header class="hidden-xs header-full" ng-show="!indexVm.isLoggedIn()">
+    <div class="container">
+        <div class="header-full-title">
+            <h1 class="animated fadeInRight"><a href="/">ESP <span>FlightBook</span></a></h1>
+            <p class="animated fadeInRight">The online logbook for general aviation pilots</p>
+        </div>
+    </div>
+</header>
+<header class="hidden-xs header-half" ng-show="indexVm.isLoggedIn()">
+    <div class="container">
+        <div class="header-half-title">
+            <h1><a href="/">ESP <span>FlightBook</span></a></h1>
+        </div>
+    </div>
+</header>
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+
+        <!-- left slidebar toggle -->
+        <div class="pull-left">
+            <a href="" class="sb-icon-navbar-left sb-toggle-left" ng-click="indexVm.toggleSlideBar('left')"><i class="fa fa-bars"></i></a>
+        </div><!-- left slidebar toggle -->
+
+        <!-- navbar header -->
+        <div class="navbar-header">
+            <a href="/" class="hidden-lg hidden-md hidden-sm navbar-brand">ESP <span>Flightbook</span></a>
+        </div><!-- navbar header -->
+
+        <!-- right slidebar toggle -->
+        <div class="pull-right hidden-lg hidden-md hidden-sm" ng-show="indexVm.isLoggedIn()" ng-click="indexVm.toggleSlideBar('right')">
+            <a href="" class="sb-icon-navbar-right sb-toggle-right"><i class="fa fa-bars"></i></a>
+        </div><!-- right slidebar toggle -->
+
+        <!-- collapsible navigation -->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ng-show="!indexVm.isLoggedIn()"><a href="#/home">Home</a></li>
+                <li ng-show="!indexVm.isLoggedIn()"><a href="#/contact">Contact Us</a></li>
+                <li ng-show="!indexVm.isLoggedIn()"><a href="#/about">About us</a></li>
+                <li class="dropdown" ng-show="indexVm.isLoggedIn()">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Logbook</a>
+                    <ul class="dropdown-menu dropdown-menu-left animated-2x animated fadeIn">
+                        <li><a href="#/logbooks">Manage Logbooks</a></li>
+                        <li class="divider"></li>
+                        <li ng-repeat="logbook in indexVm.logbooks | orderBy:'Title'"><a href="" ng-click="indexVm.setActiveLogbook(logbook.title, logbook.logbookId)">{{logbook.title}}</a></li>
+                    </ul>
+                </li>
+                <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/summary">Summary</a></li>
+                <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/currency">Currency</a></li>
+                <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/flights">Flights</a></li>
+                <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/aircraft">Aircraft</a></li>
+                <li ng-show="indexVm.isLoggedIn() && indexVm.activeLogbook.logbookId"><a href="#/pilot">Pilot</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/register" ng-hide="indexVm.isLoggedIn()"><i class="fa fa-check-square"></i> Register</a></li>
+                <li><a href="#/signin" ng-hide="indexVm.isLoggedIn()"><i class="fa fa-sign-in"></i> Sign In</a></li>
+                <li><a href="" ng-show="indexVm.isLoggedIn()" ng-click="indexVm.signout()"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+            </ul>
+        </div><!-- collapsible navigation -->
+
+    </div>
+</nav>
