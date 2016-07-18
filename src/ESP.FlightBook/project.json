@@ -78,7 +78,7 @@
   },
 
   "scripts": {
-    "prepublish": [ "bower install" ],
+    "prepublish": [ "npm install", "bower install", "gulp Clean", "gulp Deploy" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
 }

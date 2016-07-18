@@ -81,7 +81,7 @@ namespace ESP.FlightBook
             services.AddMvc();
 
             // Add CORS support
-            services.AddCors();
+            //services.AddCors();
 
             // Add application services
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -133,7 +133,7 @@ namespace ESP.FlightBook
             app.UseIdentity();
 
             // Use ESP-specific CORS
-            app.UseESPCors();
+            //app.UseESPCors();
 
             // Configure MVC
             app.UseMvc(routes =>
