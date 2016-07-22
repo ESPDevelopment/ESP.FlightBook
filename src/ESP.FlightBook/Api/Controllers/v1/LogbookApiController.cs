@@ -40,6 +40,13 @@ namespace ESP.FlightBook.Api.Controllers.v1
         /// <returns>The user id if a valid claim is present, otherwise null</returns>
         protected string GetUserIdClaim()
         {
+            // Validate user object
+            if (User == null)
+            {
+                return null;
+            }
+
+            // Validate name identifier claim
             Claim claim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (claim == null || string.IsNullOrEmpty(claim.Value))
             {
