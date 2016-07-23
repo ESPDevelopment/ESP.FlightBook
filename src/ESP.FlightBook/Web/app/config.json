@@ -23,7 +23,7 @@
       "RESOURCE_URL_PILOTS": "https://localhost:44386/api/v1/logbooks/:logbookId/pilots/:pilotId",
       "RESOURCE_URL_RATINGS": "https://localhost:44386/api/v1/logbooks/:logbookId/certificates/:certificateId/ratings/:ratingId",
       "SIGNIN_URI": "https://localhost:44386/api/v1/account/login",
-      "TOKEN_URI": "https://localhost:44386/api/v1/account/token"
+      "TOKEN_URI": "https://localhost:44386/api/v1/account/refreshToken"
     }
   },
   "Staging": {
@@ -50,7 +50,7 @@
       "RESOURCE_URL_PILOTS": "https://eflightbook.com/api/v1/logbooks/:logbookId/pilots/:pilotId",
       "RESOURCE_URL_RATINGS": "https://eflightbook.com/api/v1/logbooks/:logbookId/certificates/:certificateId/ratings/:ratingId",
       "SIGNIN_URI": "https://eflightbook.com/api/v1/account/login",
-      "TOKEN_URI": "https://eflightbook.com/api/v1/account/token"
+      "TOKEN_URI": "https://eflightbook.com/api/v1/account/refreshToken"
     }
   },
   "Production": {
@@ -77,7 +77,7 @@
       "RESOURCE_URL_PILOTS": "https://eflightbook.com/api/v1/logbooks/:logbookId/pilots/:pilotId",
       "RESOURCE_URL_RATINGS": "https://eflightbook.com/api/v1/logbooks/:logbookId/certificates/:certificateId/ratings/:ratingId",
       "SIGNIN_URI": "https://eflightbook.com/api/v1/account/login",
-      "TOKEN_URI": "https://eflightbook.com/api/v1/account/token"
+      "TOKEN_URI": "https://eflightbook.com/api/v1/account/refreshToken"
     }
   }
 }

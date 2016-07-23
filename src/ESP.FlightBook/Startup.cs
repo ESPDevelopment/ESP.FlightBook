@@ -38,6 +38,7 @@ namespace ESP.FlightBook
             if (env.IsDevelopment())
             {
                 builder.AddUserSecrets();
+                builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
             // Build configuration
@@ -90,6 +91,9 @@ namespace ESP.FlightBook
 
             // Add configuration singleton
             services.AddSingleton(Configuration);
+
+            // Add telemetry
+            services.AddApplicationInsightsTelemetry(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +103,9 @@ namespace ESP.FlightBook
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            // Add Application Insights monitoring to the request pipeline as a very first middleware
+            app.UseApplicationInsightsRequestTelemetry();
+            
             // Configure exception handling
             if (env.IsDevelopment())
             {
@@ -109,6 +116,7 @@ namespace ESP.FlightBook
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseApplicationInsightsExceptionTelemetry();
 
             // Configure static files
             app.UseStaticFiles();
