@@ -1,1 +1,11 @@
 ﻿/* In progress */
+.form-inline label {
+    margin-right: 10px;
+}
+.form-inline input {
+    margin-right: 20px;
+}
+h4.filter {
+    margin-bottom: 0px;
+    color: black;
+}

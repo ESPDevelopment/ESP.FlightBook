@@ -6,7 +6,7 @@ namespace ESP.FlightBook.Api.Extensions
     {
         public static IApplicationBuilder UseESPCors(this IApplicationBuilder app)
         {
-            // Enable cross-origin requests
+            // Define exposed headers
             string[] exposedHeaders = {
                     "X-eFlightBook-Pagination-Total",
                     "X-eFlightBook-Pagination-Limit",
@@ -14,7 +14,22 @@ namespace ESP.FlightBook.Api.Extensions
                     "X-eFlightBook-Pagination-Returned",
                     "X-eFlightBook-Pagination-TotalPages"
                 };
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders(exposedHeaders));
+
+            // Define allowed origins
+            string[] allowedOrigins =
+            {
+                "https://eflightbook.com",
+                "https://www.eflightbook.com",
+                "https://esp-flightbook.azurewebsites.net"
+            };
+
+            // Enable cross-origin requests
+            app.UseCors(builder => builder
+                //.AllowAnyOrigin()
+                .WithOrigins(allowedOrigins)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders(exposedHeaders));
 
             return app;
         }
