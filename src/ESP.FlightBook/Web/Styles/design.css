@@ -1,11 +1,11 @@
 ﻿/* In progress */
-.form-inline label {
-    margin-right: 10px;
+.form-inline .form-group input[type=checkbox] {
+  vertical-align: middle;
 }
-.form-inline input {
-    margin-right: 20px;
+.form-inline .form-group .checkbox-label {
+  vertical-align: middle;
+  margin: 4px 5px 0px 2px;
 }
-h4.filter {
-    margin-bottom: 0px;
-    color: black;
+.form-group-sm label {
+  font-size: 12px;
 }

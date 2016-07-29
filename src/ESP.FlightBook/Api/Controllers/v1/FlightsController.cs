@@ -38,7 +38,7 @@ namespace ESP.FlightBook.Api.Controllers.v1
         /// </returns>
         /// <remarks>GET api/v1/logbooks/{logbookId:int}/flights<remarks>
         [HttpGet("api/v1/logbooks/{logbookId:int}/flights", Name = "GetAllFlightsRoute")]
-        public async Task<IActionResult> GetAllFlights(int logbookId, int page = 0, int itemsPerPage = 0)
+        public async Task<IActionResult> GetAllFlights(int logbookId, int page = 0, int itemsPerPage = 0, string flightDateStart = null, string flightDateEnd = null, string aircraftIdentifier = null, string aircraftType = null, bool isComplex = false, bool isRetractable = false)
         {
             // Find associated logbook
             Logbook logbook = await _apiDbContext.Logbooks
@@ -60,6 +60,97 @@ namespace ESP.FlightBook.Api.Controllers.v1
                 return new StatusCodeResult(403);
             }
 
+            // Construct base query
+            var query = from f in _apiDbContext.Flights
+                        where f.LogbookId == logbookId
+                        select f;
+
+            // Include aircraft and approach objects
+            query = query
+                .Include(f => f.Aircraft)
+                .Include(f => f.Approaches);
+
+            // Apply flight date start
+            if (flightDateStart != null && flightDateStart.Length > 0)
+            {
+                try
+                {
+                    DateTime startDate = DateTime.Parse(flightDateStart);
+                    query = query.Where(f => f.FlightDate >= startDate);
+                }
+                catch { }
+            }
+
+            // Apply flight date end
+            if (flightDateEnd != null && flightDateEnd.Length > 0)
+            {
+                try
+                {
+                    DateTime endDate = DateTime.Parse(flightDateEnd);
+                    query = query.Where(f => f.FlightDate <= endDate);
+                }
+                catch { }
+            }
+
+            // Apply aircraft identifier filter
+            if (aircraftIdentifier != null && aircraftIdentifier.Length > 0)
+            {
+                query = query.Where(f => f.Aircraft.AircraftIdentifier == aircraftIdentifier);
+            }
+
+            // Apply aircraft type filter
+            if (aircraftType != null && aircraftType.Length > 0)
+            {
+                query = query.Where(f => f.Aircraft.AircraftType == aircraftType);
+            }
+
+            // Apply complex filter
+            if (isComplex == true)
+            {
+                query = query.Where(f => f.Aircraft.IsComplex == true);
+            }
+
+            // Apply retractable filter
+            if (isRetractable == true)
+            {
+                string[] retractables = { "Retractable Tailwheel", "Retractable Tricycle" };
+                query = query.Where(f => retractables.Contains(f.Aircraft.GearType));
+            }
+
+            // Order by flight date
+            query = query.OrderByDescending(f => f.FlightDate);
+
+            // Get count of matching rows before paging
+            int rowCount = await query.CountAsync();
+
+            // Limit to a specific "page"
+            if (itemsPerPage > 0)
+            {
+                query = query
+                    .Skip(page * itemsPerPage)
+                    .Take(itemsPerPage);
+            }
+
+            // Select items
+            List<Flight> flightList = new List<Flight>();
+            flightList = await query.ToListAsync();
+
+            // Construct response headers
+            Response.Headers.Add("X-eFlightBook-Pagination-Total", rowCount.ToString());
+            Response.Headers.Add("X-eFlightBook-Pagination-Limit", itemsPerPage.ToString());
+            if (itemsPerPage > 0)
+            {
+                int totalPages = TotalPageCount(rowCount, itemsPerPage);
+                page = GetBestPage(totalPages, page);
+                Response.Headers.Add("X-eFlightBook-Pagination-TotalPages", totalPages.ToString());
+                Response.Headers.Add("X-eFlightBook-Pagination-Page", page.ToString());
+            } else
+            {
+                Response.Headers.Add("X-eFlightBook-Pagination-TotalPages", "1");
+                Response.Headers.Add("X-eFlightBook-Pagination-Page", "0");
+            }
+
+            /*
             // Determine how many matching rows we expect
             int rowCount = await _apiDbContext.Flights.CountAsync(f => f.LogbookId == logbookId);
             Response.Headers.Add("X-eFlightBook-Pagination-Total", rowCount.ToString());
@@ -80,6 +171,7 @@ namespace ESP.FlightBook.Api.Controllers.v1
                     page = GetBestPage(totalPages, page);
                     Response.Headers.Add("X-eFlightBook-Pagination-TotalPages", totalPages.ToString());
                     Response.Headers.Add("X-eFlightBook-Pagination-Page", page.ToString());
+
 
                     // Retrieve the requested items
                     flightList = await _apiDbContext.Flights
@@ -104,9 +196,9 @@ namespace ESP.FlightBook.Api.Controllers.v1
                         .ToListAsync();
                     Response.Headers.Add("X-eFlightBook-Pagination-TotalPages", "1");
                     Response.Headers.Add("X-eFlightBook-Pagination-Page", "0");
-
                 }
             }
+            */
 
             // Convert to DTO
             List<FlightDTO> dtoList = new List<FlightDTO>();

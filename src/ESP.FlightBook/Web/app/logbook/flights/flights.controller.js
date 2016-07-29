@@ -21,6 +21,16 @@
         vm.constants = logbookService.constantsResource.constants;
         vm.disableNext = false;
         vm.disablePrev = false;
+        vm.filter = {
+            active: false,
+            flightDateStart: '',
+            flightDateEnd: '',
+            aircraftIdentifier: '',
+            aircraftType: '',
+            isComplex: false,
+            isRetractable: false
+        };
+        vm.filterPanelTitle = 'Filter';
         vm.flights = logbookService.flightsResource.flights;
         vm.message = '';
         vm.pages = [];
@@ -42,14 +52,16 @@
         // Available functions
         vm.addApproach = addApproach;
         vm.addFlight = addFlight;
+        vm.applyFilter = applyFilter;
+        vm.clearFilter = clearFilter;
         vm.deleteApproach = deleteApproach;
         vm.deleteFlight = deleteFlight;
-        vm.queryFlights = queryFlights;
         vm.getRoute = getRoute;
         vm.initAddApproachModal = initAddApproachModal;
         vm.initAddFlightModal = initAddFlightModal;
         vm.initUpdateApproachModal = initUpdateApproachModal;
         vm.initUpdateFlightModal = initUpdateFlightModal;
+        vm.queryFlights = queryFlights;
         vm.updateApproach = updateApproach;
         vm.updateFlight = updateFlight;
 
@@ -116,6 +128,24 @@
             vm.flightForm.$setUntouched();
             vm.message = LOGBOOK_CONSTANT.MSG_FLIGHT_ADDED;
             vm.working = false;
+        }
+
+        // Apply filter
+        function applyFilter() {
+            vm.filter.active = true;
+            vm.filterPanelTitle = 'Filter (applied)';
+            queryFlights(0);
+        }
+
+        // Clear filter
+        function clearFilter() {
+            vm.filterPanelTitle = 'Filter';
+            vm.filter.active = false;
+            vm.filter.flightDateStart = '';
+            vm.filter.flightDateEnd = '';
+            vm.filter.aircraftIdentifier = '';
+            vm.filter.aircraftType = '';
+            queryFlights(0);
         }
 
         // Delete existing approach
@@ -305,7 +335,7 @@
         function queryFlights(page) {
             vm.working = true;
             vm.pageCurrent = page;
-            logbookService.flightsResource.queryFlights(vm.activeLogbook.logbookId, vm.pageCurrent, LOGBOOK_CONSTANT.FLIGHTS_PER_PAGE)
+            logbookService.flightsResource.queryFlights(vm.activeLogbook.logbookId, vm.pageCurrent, LOGBOOK_CONSTANT.FLIGHTS_PER_PAGE, vm.filter)
                 .then(queryFlightsSucceeded, queryFlightsFailed);
         }
 

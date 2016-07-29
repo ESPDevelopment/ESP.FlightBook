@@ -34,7 +34,18 @@
 
         // Initialize the resource
         function initialize() {
-            resource = cacheService.createResource(ENVIRONMENT_CONFIG.RESOURCE_URL_FLIGHTS, { logbookId: '@logbookId', flightId: '@flightId', page: '@page', itemsPerPage: '@itemsPerPage' });
+            resource = cacheService.createResource(ENVIRONMENT_CONFIG.RESOURCE_URL_FLIGHTS, {
+                logbookId: '@logbookId',
+                flightId: '@flightId',
+                page: '@page',
+                itemsPerPage: '@itemsPerPage',
+                flightDateStart: '@flightDateStart',
+                flightDateEnd: '@flightDateEnd',
+                aircraftIdentifier: '@aircraftIdentifier',
+                aircraftType: '@aircraftType',
+                isComplex: '@isComplex',
+                isRetractable: '@isRetractable'
+            });
         }
 
         // Add a flight
@@ -86,9 +97,28 @@
         }
 
         // Query flights
-        function queryFlights(logbookId, page, itemsPerPage) {
-            var promise = resource.query({ logbookId: logbookId, page: page, itemsPerPage: itemsPerPage }).$promise
-                .then(queryFlightsSucceeded, queryFlightsFailed);
+        function queryFlights(logbookId, page, itemsPerPage, filter) {
+            var query = '';
+            if (angular.isDefined(filter) && angular.isDefined(filter.active) && filter.active == true) {
+                query = {
+                    logbookId: logbookId,
+                    page: page,
+                    itemsPerPage: itemsPerPage,
+                    flightDateStart: filter.flightDateStart,
+                    flightDateEnd: filter.flightDateEnd,
+                    aircraftIdentifier: filter.aircraftIdentifier,
+                    aircraftType: filter.aircraftType,
+                    isComplex: filter.isComplex,
+                    isRetractable: filter.isRetractable
+                };
+            } else {
+                query = {
+                    logbookId: logbookId,
+                    page: page,
+                    itemsPerPage: itemsPerPage
+                };
+            }
+            var promise = resource.query(query).$promise.then(queryFlightsSucceeded, queryFlightsFailed);
             return promise;
         }
 
