@@ -9,6 +9,7 @@
             'ngSanitize',
             'app.utils',
             'angular-cache',
+            'ngFileSaver',
             'googlechart'
         ]);
 })();

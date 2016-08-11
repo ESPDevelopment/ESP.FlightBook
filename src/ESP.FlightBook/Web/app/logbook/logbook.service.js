@@ -7,10 +7,10 @@
         .factory('logbookService', logbookService);
 
     // Inject dependencies
-    logbookService.$inject = ['$rootScope', '$location', 'localStorageService', 'cacheService', 'aircraftResource', 'approachesResource', 'certificatesResource', 'constantsResource', 'currenciesResource', 'endorsementsResource', 'flightsResource', 'logbooksResource', 'pilotsResource', 'ratingsResource', 'summaryResource', 'LOGBOOK_CONSTANT'];
+    logbookService.$inject = ['$rootScope', '$location', 'localStorageService', 'cacheService', 'aircraftResource', 'approachesResource', 'certificatesResource', 'constantsResource', 'currenciesResource', 'endorsementsResource', 'flightsResource', 'logbooksResource', 'pilotsResource', 'ratingsResource', 'summaryResource', 'exportResource', 'LOGBOOK_CONSTANT'];
 
     // Define the service
-    function logbookService($rootScope, $location, localStorageService, cacheService, aircraftResource, approachesResource, certificatesResource, constantsResource, currenciesResource, endorsementsResource, flightsResource, logbooksResource, pilotsResource, ratingsResource, summaryResource, LOGBOOK_CONSTANT) {
+    function logbookService($rootScope, $location, localStorageService, cacheService, aircraftResource, approachesResource, certificatesResource, constantsResource, currenciesResource, endorsementsResource, flightsResource, logbooksResource, pilotsResource, ratingsResource, summaryResource, exportResource, LOGBOOK_CONSTANT) {
 
         // Define the service
         var activeLogbook = { title: LOGBOOK_CONSTANT.TXT_SELECT_LOGBOOK, logbookId: 0 };
@@ -23,6 +23,7 @@
             constantsResource: constantsResource,
             currenciesResource: currenciesResource,
             endorsementsResource: endorsementsResource,
+            exportResource: exportResource,
             flightsResource: flightsResource,
             logbooksResource: logbooksResource,
             pilotsResource: pilotsResource,

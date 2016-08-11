@@ -6,6 +6,7 @@
     "angular-animate": "1.5.7",
     "angular-cache": "4.6.0",
     "angular-cookies": "1.5.7",
+    "angular-file-saver": "1.1.2",
     "angular-google-chart": "0.1.0",
     "angular-local-storage": "0.2.7",
     "angular-resource": "1.5.7",

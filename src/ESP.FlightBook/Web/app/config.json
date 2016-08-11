@@ -3,6 +3,7 @@
     "ENVIRONMENT_CONFIG": {
       "CHANGE_PASSWORD_URI": "https://localhost:44386/api/v1/account/changePassword",
       "CONFIRM_EMAIL_URI": "https://localhost:44386/api/v1/account/confirmEmail",
+      "EXPORT_LOGBOOK_URI": "https://localhost:44386/api/v1/logbooks/:logbookId/export",
       "FORGOT_PASSWORD_URI": "https://localhost:44386/api/v1/account/forgotPassword",
       "HOST_API": "https://localhost:44386",
       "HOST_CLIENT": "https://localhost:44386",
@@ -30,6 +31,7 @@
     "ENVIRONMENT_CONFIG": {
       "CHANGE_PASSWORD_URI": "https://eflightbook.com/api/v1/account/changePassword",
       "CONFIRM_EMAIL_URI": "https://eflightbook.com/api/v1/account/confirmEmail",
+      "EXPORT_LOGBOOK_URI": "https://eflightbook.com/api/v1/logbooks/:logbookId/export",
       "FORGOT_PASSWORD_URI": "https://eflightbook.com/api/v1/account/forgotPassword",
       "HOST_API": "https://eflightbook.com",
       "HOST_CLIENT": "https://eflightbook.com",
@@ -57,6 +59,7 @@
     "ENVIRONMENT_CONFIG": {
       "CHANGE_PASSWORD_URI": "https://eflightbook.com/api/v1/account/changePassword",
       "CONFIRM_EMAIL_URI": "https://eflightbook.com/api/v1/account/confirmEmail",
+      "EXPORT_LOGBOOK_URI": "https://eflightbook.com/api/v1/logbooks/:logbookId/export",
       "FORGOT_PASSWORD_URI": "https://eflightbook.com/api/v1/account/forgotPassword",
       "HOST_API": "https://eflightbook.com",
       "HOST_CLIENT": "https://eflightbook.com",

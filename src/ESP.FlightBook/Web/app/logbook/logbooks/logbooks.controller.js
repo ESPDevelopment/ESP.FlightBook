@@ -7,15 +7,17 @@
         .controller('LogbooksController', LogbooksController);
 
     // Inject dependencies
-    LogbooksController.$inject = ['$rootScope', '$location', 'logbookService', 'authService', 'utilService', 'LOGBOOK_CONSTANT'];
+    LogbooksController.$inject = ['$rootScope', '$location', 'logbookService', 'authService', 'utilService', 'FileSaver', 'Blob', 'LOGBOOK_CONSTANT'];
 
     // Define the controller
-    function LogbooksController($rootScope, $location, logbookService, authService, utilService, LOGBOOK_CONSTANT) {
+    function LogbooksController($rootScope, $location, logbookService, authService, utilService, FileSaver, Blob, LOGBOOK_CONSTANT) {
 
         var vm = this;
 
         // Available attributes
         vm.action = { type: 'none', title: '' };
+        vm.enableExportButton = false;
+        vm.exportLogbookId = 0;
         vm.logbooks = logbookService.logbooksResource.logbooks;
         vm.message = '';
         vm.showAddButton = false;
@@ -27,8 +29,10 @@
         // Available functions
         vm.addLogbook = addLogbook;
         vm.deleteLogbook = deleteLogbook;
+        vm.exportLogbook = exportLogbook;
         vm.getLogbook = getLogbook;
         vm.initAddModal = initAddModal;
+        vm.initExportModal = initExportModal;
         vm.initUpdateModal = initUpdateModal;
         vm.setActiveLogbook = setActiveLogbook;
         vm.updateLogbook = updateLogbook;
@@ -94,6 +98,30 @@
             vm.working = false;
         }
 
+        // Export a logbook
+        function exportLogbook() {
+            vm.working = true;
+            logbookService.exportResource.exportLogbook(vm.exportLogbookId)
+                .then(exportLogbookSucceeded, exportLogbookFailed);
+        }
+
+        // Handle failed export
+        function exportLogbookFailed(err) {
+            vm.message = LOGBOOK_CONSTANT.MSG_LOGBOOK_EXPORT_ERROR;
+            vm.enableExportButton = true;
+            vm.working = false;
+        }
+
+        // Handle successful export
+        function exportLogbookSucceeded(response) {
+            var logbook = angular.toJson(response);
+            var blob = new Blob([logbook], { type: 'application/json;charset=utf-8' });
+            FileSaver.saveAs(blob, 'Logbook.json', true);
+            vm.message = LOGBOOK_CONSTANT.MSG_LOGBOOK_EXPORTED;
+            vm.enableExportButton = true;
+            vm.working = false;
+        }
+
         // Get a logbook
         function getLogbook(logbookId) {
             vm.working = true;
@@ -127,6 +155,13 @@
             vm.logbookForm.$setPristine();
             vm.logbookForm.$setUntouched();
             vm.tempLogbook = {};
+        }
+
+        // Initialize export modal
+        function initExportModal(logbookId) {
+            vm.message = '';
+            vm.enableExportButton = true;
+            vm.exportLogbookId = logbookId;
         }
 
         // Function init update modal

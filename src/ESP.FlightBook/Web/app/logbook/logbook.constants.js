@@ -70,6 +70,8 @@
             MSG_LOGBOOK_ADD_ERROR: 'Unable to create logbook',
             MSG_LOGBOOK_DELETED: 'Logbook deleted',
             MSG_LOGBOOK_DELETE_ERROR: 'Unable to delete logbook',
+            MSG_LOGBOOK_EXPORTED: 'Logbook exported',
+            MSG_LOGBOOK_EXPORT_ERROR: 'Unable to export logbook',
             MSG_LOGBOOK_GET_ERROR: 'Unable to retrieve logbook information',
             MSG_LOGBOOK_QUERY_ERROR: 'Unable to retrieve logbooks',
             MSG_LOGBOOK_UPDATED: 'Logbook information updated',

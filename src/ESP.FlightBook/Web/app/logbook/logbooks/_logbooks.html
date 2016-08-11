@@ -25,12 +25,14 @@
                                     <tr>
                                         <th class="table-edit-column"></th>
                                         <th>Logbook</th>
+                                        <th class="table-edit-column"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="logbook in logbooksVm.logbooks | orderBy:'Title'">
                                         <td><a href="" data-toggle="modal" data-target="#logbookModal" ng-click="logbooksVm.initUpdateModal(logbook.logbookId)"><i class="fa fa-pencil"></i></a></td>
                                         <td ng-click="logbooksVm.setActiveLogbook(logbook.title, logbook.logbookId)">{{logbook.title}}<br /><span class="text-info">{{logbook.remarks}}</span></td>
+                                        <td><a href="" data-toggle="modal" data-target="#exportModal" ng-click="logbooksVm.initExportModal(logbook.logbookId)"><i class="fa fa-cloud-download"></i></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -46,6 +48,31 @@
         </div>
     </div>
 </section><!-- logbooks section -->
+
+<!-- export modal -->
+<div class="modal fade" id="exportModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Export Logbook</h3>
+            </div>
+            <div class="modal-body">
+                <p>Click the Export button to download a copy of your logbook information.</p>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="logbooksVm.working">
+                    <p class="text-success pull-left"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Working...</p>
+                </div>
+                <div ng-show="!logbooksVm.working">
+                    <p class="text-success pull-left">{{logbooksVm.message}}</p>
+                </div>
+                <button type="button" class="btn btn-esp btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-esp btn-primary" ng-enabled="logbooksVm.enableExportButton" ng-click="logbooksVm.exportLogbook()">Export</button>
+            </div>
+        </div>
+    </div>
+</div><!-- export modal -->
 
 <!-- logbook modal -->
 <div class="modal fade" id="logbookModal">
