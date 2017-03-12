@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{75E221C5-2CE1-4A96-9509-696D2EF611BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F463D79-8545-4E64-82F6-127E4B60DDB6}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ESP.FlightBook", "src\ESP.FlightBook\ESP.FlightBook.xproj", "{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3D9122BF-08FD-4394-83F9-090E633E6DF6}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ESP.FlightBook.Tests", "test\ESP.FlightBook.Tests\ESP.FlightBook.Tests.xproj", "{0D5796C6-F8C5-47CC-9E15-61BB9093B507}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESP.FlightBook", "src\ESP.FlightBook\ESP.FlightBook.csproj", "{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESP.FlightBook.Tests", "test\ESP.FlightBook.Tests\ESP.FlightBook.Tests.csproj", "{8967153D-96B3-4F42-B653-EF93B084890D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,20 +19,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D5796C6-F8C5-47CC-9E15-61BB9093B507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D5796C6-F8C5-47CC-9E15-61BB9093B507}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D5796C6-F8C5-47CC-9E15-61BB9093B507}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D5796C6-F8C5-47CC-9E15-61BB9093B507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8967153D-96B3-4F42-B653-EF93B084890D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8967153D-96B3-4F42-B653-EF93B084890D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8967153D-96B3-4F42-B653-EF93B084890D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8967153D-96B3-4F42-B653-EF93B084890D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F3B8B564-8EC6-408D-9C82-D63CD7BADC9E} = {75E221C5-2CE1-4A96-9509-696D2EF611BD}
-		{0D5796C6-F8C5-47CC-9E15-61BB9093B507} = {3D9122BF-08FD-4394-83F9-090E633E6DF6}
+		{EF81ED98-44C0-4364-A0BE-EE13AE30FD5B} = {75E221C5-2CE1-4A96-9509-696D2EF611BD}
+		{8967153D-96B3-4F42-B653-EF93B084890D} = {3D9122BF-08FD-4394-83F9-090E633E6DF6}
 	EndGlobalSection
 EndGlobal
